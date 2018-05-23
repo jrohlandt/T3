@@ -3,7 +3,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const publicPath = path.resolve(__dirname, 'public');
-const jsPublicPath = publicPath + path.join('assets', 'js', 'app');
+const jsPublicPath = publicPath + path.join('/', 'assets', 'js', 'app');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -36,7 +36,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 't3',
-            filename: publicPath + 'index.html',
+            filename: publicPath + path.join('/', 'index.html'),
+            template: '!!ejs-loader!./resources/assets/html/index.ejs',
+            inject: false,
         }),
     ],
 };
