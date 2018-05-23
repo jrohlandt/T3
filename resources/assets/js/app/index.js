@@ -1,0 +1,1 @@
+console.log('hello t3 from index.js');
