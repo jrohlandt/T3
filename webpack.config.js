@@ -30,10 +30,18 @@ module.exports = {
                 query: {
                     presets: ['env', 'react']
                 }
-            }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
         ]
     },
     plugins: [
+        new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
             filename: publicPath + path.join('/', 'index.html'),

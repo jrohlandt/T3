@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import './sidebar.css';
+html, body {
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+
+    font-family: 'Open Sans', sans-serif;
+}
+
+#app {
+    height: 100%;
+}
+
+#wrapper {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-areas: 
+        "main";
+}
+
+
+
+main {
+    grid-area: main;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.timer-active-task-row,
+.timer-task-row {
+    display: grid;
+    grid-template-columns: 60% 20% 20%;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+
+.timer-active-task-row {
+    height: 70px;
+}
+
+/* ttr timer-task-row */
+.ttr-main {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.ttr-secondary {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.ttr-last {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+@media screen and (min-width: 700px) {
+    
+    #wrapper {
+        display: grid;
+        height: 100%;
+        grid-template-columns: 200px auto;
+        grid-template-areas: 
+            "leftnav main";
+    
+    }
+
+}

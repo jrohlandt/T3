@@ -1,0 +1,13 @@
+#sidebar-left {
+    display: none;
+}
+
+@media screen and (min-width: 700px) {
+
+    #sidebar-left {
+        display: block;
+        grid-area: leftnav;
+        background-color: rgba(0, 0, 0, .5);
+    }
+    
+}
