@@ -21,6 +21,13 @@ module.exports = {
         filename: '[name].[chunkhash].js',
         path: jsPublicPath,
     },
+    devServer: {
+        contentBase: publicPath,
+        port: 60800,
+        proxy: {
+            '/api': 'http://localhost:3000',
+        },
+    },
     module: {
         rules: [
             {
