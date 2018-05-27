@@ -9,8 +9,18 @@ app.use(morgan('dev'));
 
 app.use(express.static('public'));
 app.get('/api', (req, res) => res.status(200).json('welcome to api'));
-const tasks = [{id: 1, description: 'Task 10'}, {id: 2, description: 'Task 2'}];
-app.get('/api/tasks', (req, res) => res.status(200).json({tasks: tasks}));
+// const tasks = [{id: 1, description: 'Task 10'}, {id: 2, description: 'Task 2'}];
+
+app.get('/api/tasks', async (req, res) => {
+    const Tasks = require('./app/models/').tasks;
+    try {
+        const tasks = await Tasks.all();
+        res.status(200).json({tasks: tasks})                
+    } catch (err) {
+        console.log(err);
+    }
+
+});
 
 app.listen(3000, () => console.log('Ready...'));
 
