@@ -8,6 +8,7 @@
     "start": "nodemon server.js",
     "start:devServer": "webpack-dev-server",
     "build:dev": "webpack-cli --mode=development",
+    "build:watch": "webpack-cli --mode=development --watch",
     "build:production": "webpack-cli --mode=production"
   },
   "repository": {

@@ -9,5 +9,9 @@
         grid-area: leftnav;
         background-color: rgba(0, 0, 0, .5);
     }
+
+    .left-nav-active {
+        color: white;
+    }
     
 }

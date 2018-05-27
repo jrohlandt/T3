@@ -1,64 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import '../../css/main.css';
 
-
-const Timer = () => (
-    <div>
-        <div className="timer-active-task-row">
-            <div className="ttr-main">
-                    <div>This is the active task</div>
-            </div>
-            <div className="ttr-secondary">
-                secondary
-            </div>
-            <div className="ttr-last">
-                last
-            </div>
-        </div>
-        <div className="timer-task-row">
-            <div className="ttr-main">
-                <div>This is a task description</div>
-            </div>
-            <div className="ttr-secondary">
-                secondary
-            </div>
-            <div className="ttr-last">
-                last
-            </div>
-        </div>
-        <div className="timer-task-row">
-            <div className="ttr-main">
-                <div>This is a task description</div>
-            </div>
-            <div className="ttr-secondary">
-                secondary
-            </div>
-            <div className="ttr-last">
-                last
-            </div>
-        </div>
-    </div>
-);
-
-const Reports = () => (
-    <div>
-        Reports
-    </div>
-);
-
-const Projects = () => (
-    <div>
-        Projects
-    </div>
-);
-
-const Clients = () => (
-    <div>
-        Clients
-    </div>
-);
+import Timer from './components/Timer/index.js';
+import Reports from './components/Reports';
+import Projects from './components/Projects';
+import Clients from './components/Clients';
 
 const App = () => (
     <Router>
@@ -67,16 +15,33 @@ const App = () => (
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/">Timer</Link>
+                            <NavLink 
+                                exact
+                                to="/"
+                                activeClassName="left-nav-active"
+                            >Timer
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/reports">Reports</Link>
+                            <NavLink 
+                                to="/reports"
+                                activeClassName="left-nav-active"
+                            >Reports
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/projects">Projects</Link>
+                            <NavLink 
+                                to="/projects"
+                                activeClassName="left-nav-active"
+                            >Projects
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/clients">Clients</Link>
+                            <NavLink 
+                                to="/clients"
+                                activeClassName="left-nav-active"
+                            >Clients
+                            </NavLink>
                         </li>
                     </ul>
                 </nav>
