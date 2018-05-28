@@ -39,6 +39,7 @@ main {
 
 .timer-active-task-row {
     height: 70px;
+    margin-bottom: 30px;
 }
 
 /* ttr timer-task-row */

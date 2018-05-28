@@ -26,6 +26,17 @@ class Timer extends React.Component {
         const tasksRows = this.state.tasks.map((t, i) => <TaskRow task={t} key={t.id} />);
         return (
             <div>
+                <div class="timer-active-task-row">
+                    <div class="ttr-main">
+                        <div><input type="text" /></div>
+                    </div>
+                    <div class="ttr-secondary">
+                        secondary
+                    </div>
+                    <div class="ttr-last">
+                        last
+                    </div>
+                </div>
                 {tasksRows}
             </div>
         );

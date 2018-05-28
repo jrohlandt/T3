@@ -3,7 +3,7 @@ import React from 'react';
 const TaskRow = (props) => {
     const t = props.task;
     return (
-        <div className="timer-active-task-row">
+        <div className="timer-task-row">
             <div className="ttr-main">
                     <div>{t.description}</div>
             </div>
