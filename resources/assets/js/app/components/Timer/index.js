@@ -8,7 +8,27 @@ class Timer extends React.Component {
 
         this.state = {
             tasks: [],
+            activeTask: {
+                id: 0,
+                description: '',
+                projectId: 0,
+                clientId: 0,
+            },
         };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        const description = event.target.value;
+        this.setState({activeTask: {description: description}});
+
+        if (this.state.activeTask.id === 0) {
+            // create
+        } else {
+            // update
+        }
+        
     }
 
     componentDidMount() {
@@ -26,14 +46,14 @@ class Timer extends React.Component {
         const tasksRows = this.state.tasks.map((t, i) => <TaskRow task={t} key={t.id} />);
         return (
             <div>
-                <div class="timer-active-task-row">
-                    <div class="ttr-main">
-                        <div><input type="text" /></div>
+                <div className="timer-active-task-row">
+                    <div className="ttr-main">
+                        <div><input type="text" onChange={this.handleChange} /></div>
                     </div>
-                    <div class="ttr-secondary">
+                    <div className="ttr-secondary">
                         secondary
                     </div>
-                    <div class="ttr-last">
+                    <div className="ttr-last">
                         last
                     </div>
                 </div>
