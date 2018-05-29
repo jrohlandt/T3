@@ -19,8 +19,10 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/jrohlandt/t3#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
+    "multer": "^1.0.5",
     "mysql2": "^1.5.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",

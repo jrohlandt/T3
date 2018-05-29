@@ -25,6 +25,18 @@ class Timer extends React.Component {
 
         if (this.state.activeTask.id === 0) {
             // create
+            fetch('http://localhost:3000/api/tasks/', {
+                method: 'post',
+                cache: 'no-cache',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(this.state.activeTask),
+            }).then(response => {
+                response.json()
+                    .then(json => console.log(json))
+                    .catch(err => console.log(err));
+            }).catch(err => console.log(err));
         } else {
             // update
         }
@@ -32,8 +44,13 @@ class Timer extends React.Component {
     }
 
     componentDidMount() {
+        
         fetch('http://localhost:3000/api/tasks')
             .then(res => {
+                if (res.status !== 200) {
+                    console.log('Could not fetch tasks. Status Code: ' + res.status);
+                    return;
+                }
                 res.json()
                     .then(json => this.setState({tasks: json.tasks}))
                     .catch(err => console.log(err));
