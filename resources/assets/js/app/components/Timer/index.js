@@ -17,13 +17,19 @@ class Timer extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleOnFocus = this.handleOnFocus.bind(this);
+        this.handleOnBlur = this.handleOnBlur.bind(this);        
     }
 
     handleChange(event) {
         const description = event.target.value;
-        this.setState({activeTask: {description: description}});
+        this.setState({activeTask: {description: description}}); 
+    }
 
+    handleOnFocus(event) {
+        console.log('on focus');
         if (this.state.activeTask.id === 0) {
+            console.log('create task');
             // create
             fetch('http://localhost:3000/api/tasks/', {
                 method: 'post',
@@ -34,12 +40,17 @@ class Timer extends React.Component {
                 body: JSON.stringify(this.state.activeTask),
             }).then(response => {
                 response.json()
-                    .then(json => console.log(json))
+                    .then(json => {
+                        console.log(json);
+                        this.setState({activeTask: json.task});
+                    })
                     .catch(err => console.log(err));
             }).catch(err => console.log(err));
-        } else {
-            // update
         }
+    }
+
+    handleOnBlur(event) {
+        console.log('on blur');
         
     }
 
@@ -65,7 +76,7 @@ class Timer extends React.Component {
             <div>
                 <div className="timer-active-task-row">
                     <div className="ttr-main">
-                        <div><input type="text" onChange={this.handleChange} /></div>
+                        <div><input type="text" onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onChange={this.handleChange} /></div>
                     </div>
                     <div className="ttr-secondary">
                         secondary

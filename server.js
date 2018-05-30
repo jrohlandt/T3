@@ -28,8 +28,39 @@ app.get('/api/tasks', async (req, res) => {
 });
 
 app.post('/api/tasks', async (req, res) => {
-    console.log('post task: ', req.body);
-    res.status(200).json({message: 'create task'});
+    const Tasks = require('./app/models/').tasks;
+
+    try {
+        const body = req.body;
+        if (body.id !== 0) {
+            return res.status(200).json({
+                message: `Task with id: ${body.id} has already been created.`,
+                task: body,
+            });
+        }
+        Tasks.create({
+            description: body.description
+        })
+        .then(task => { 
+            res.status(200).json({
+                message: 'Task has been created!',
+                task: task,
+            });
+        })
+        .catch(err => res.status(500).json({
+            message: 'Task could not be created.',
+            error: err,
+            task: body,
+        }));
+    } catch (err) {
+        res.status(500).json({
+            message: 'Task could not be created.',
+            error: err,
+            task: body,
+        });
+    }
+    // console.log('post task: ', req.body);
+    // res.status(200).json({message: 'server create task'});
 });
 
 app.listen(3000, () => console.log('Ready...'));
