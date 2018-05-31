@@ -23,7 +23,9 @@ class Timer extends React.Component {
 
     handleChange(event) {
         const description = event.target.value;
-        this.setState({activeTask: {description: description}}); 
+        const activeTask = this.state.activeTask;
+        activeTask.description = description;
+        this.setState({activeTask});
     }
 
     handleOnFocus(event) {
@@ -42,16 +44,41 @@ class Timer extends React.Component {
                 response.json()
                     .then(json => {
                         console.log(json);
+                        if (response.status !== 200) {
+                            console.log('Could not create task. Status Code: ' + response.status);
+                            return;
+                        }
                         this.setState({activeTask: json.task});
                     })
                     .catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
-    }
+    }   
 
     handleOnBlur(event) {
         console.log('on blur');
-        
+        if (this.state.activeTask.id > 0) {
+            console.log('create task');
+            // create
+            fetch('http://localhost:3000/api/tasks/', {
+                method: 'put',
+                cache: 'no-cache',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(this.state.activeTask),
+            }).then(response => {
+                response.json()
+                    .then(json => {
+                        console.log(json);
+                        if (response.status !== 200) {
+                            console.log('Could not update task. Status Code: ' + response.status);
+                            return;
+                        }
+                    })
+                    .catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        }
     }
 
     componentDidMount() {
