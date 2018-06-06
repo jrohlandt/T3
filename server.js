@@ -16,6 +16,8 @@ app.use(express.static('public'));
 app.get('/api', (req, res) => res.status(200).json('welcome to api'));
 // const tasks = [{id: 1, description: 'Task 10'}, {id: 2, description: 'Task 2'}];
 
+
+// INDEX/LIST
 app.get('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
     try {
@@ -27,6 +29,7 @@ app.get('/api/tasks', async (req, res) => {
 
 });
 
+// CREATE
 app.post('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
 
@@ -57,6 +60,8 @@ app.post('/api/tasks', async (req, res) => {
     // res.status(200).json({message: 'server create task'});
 });
 
+
+// UPDATE
 app.put('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
 
@@ -72,6 +77,10 @@ app.put('/api/tasks', async (req, res) => {
         const task = await Tasks.findById(body.id);
         await task.update({
             description: body.description,
+            startTime: body.startTime,
+            endTime: body.endTime,
+            tzOffset: body.tzOffset,
+            tzName: body.tzName
         });
 
         res.status(200).json({
