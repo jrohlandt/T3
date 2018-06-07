@@ -6,19 +6,21 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
 
+        this.initialActiveTask = {
+            id: 0,
+            description: '',
+            projectId: 0,
+            clientId: 0,
+            activeButton: 'start',
+            startTime: 0,
+            endTime: 0,
+            tzOffset: 0,
+            tzName: 'none',
+        };
+
         this.state = {
             tasks: [],
-            activeTask: {
-                id: 0,
-                description: '',
-                projectId: 0,
-                clientId: 0,
-                activeButton: 'start',
-                startTime: 0,
-                endTime: 0,
-                tzOffset: 0,
-                tzName: 'none',
-            },
+            activeTask: this.initialActiveTask,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -51,7 +53,7 @@ class Timer extends React.Component {
             activeTask.activeButton = 'stop';
             this.setState({activeTask});
             if (this.state.activeTask.id > 0) {
-                console.log('create task');
+                console.log('start timer');
                 // update
                 fetch('http://localhost:3000/api/tasks/', {
                     method: 'put',
@@ -74,6 +76,38 @@ class Timer extends React.Component {
             }
         } else {
             console.log('stop timer');
+            const initialActiveTask = this.initialActiveTask;
+            activeTask.endTime = this.dateToMysql(date);
+            // update
+            fetch('http://localhost:3000/api/tasks/', {
+                method: 'put',
+                cache: 'no-cache',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(activeTask),
+            }).then(response => {
+                response.json()
+                    .then(json => {
+                        console.log(json);
+                        if (response.status !== 200) {
+                            console.log('Could not update task. Status Code: ' + response.status);
+                            return;
+                        }
+                        fetch('http://localhost:3000/api/tasks')
+                            .then(res => {
+                                if (res.status !== 200) {
+                                    console.log('Could not fetch tasks. Status Code: ' + res.status);
+                                    return;
+                                }
+                                res.json()
+                                    .then(json => this.setState({tasks: json.tasks, activeTask: initialActiveTask})) // todo activeTask state is not changed.
+                                    .catch(err => console.log(err));
+                            })
+                            .catch(err => console.log(err));
+                    })
+                    .catch(err => console.log(err));
+            }).catch(err => console.log(err));
         }
     }
 
