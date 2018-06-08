@@ -1,26 +1,26 @@
 import React from 'react';
 import TaskRow from './TaskRow';
 
+const initialActiveTask = {
+    id: 0,
+    description: '',
+    projectId: 0,
+    clientId: 0,
+    activeButton: 'start',
+    startTime: 0,
+    endTime: 0,
+    tzOffset: 0,
+    tzName: 'none',
+};
+
 class Timer extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.initialActiveTask = {
-            id: 0,
-            description: '',
-            projectId: 0,
-            clientId: 0,
-            activeButton: 'start',
-            startTime: 0,
-            endTime: 0,
-            tzOffset: 0,
-            tzName: 'none',
-        };
-
         this.state = {
             tasks: [],
-            activeTask: this.initialActiveTask,
+            activeTask: initialActiveTask,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -76,7 +76,6 @@ class Timer extends React.Component {
             }
         } else {
             console.log('stop timer');
-            const initialActiveTask = this.initialActiveTask;
             activeTask.endTime = this.dateToMysql(date);
             // update
             fetch('http://localhost:3000/api/tasks/', {
@@ -86,28 +85,30 @@ class Timer extends React.Component {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(activeTask),
-            }).then(response => {
-                response.json()
-                    .then(json => {
-                        console.log(json);
-                        if (response.status !== 200) {
-                            console.log('Could not update task. Status Code: ' + response.status);
+            })
+            .then(response => {
+                if (response.status !== 200) {
+                    console.log('Could not update task. Status Code: ' + response.status);
+                    throw new Error(`The task could not be updated on the server. HTTP Status: ${response.status}.`);
+                }
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+                fetch('http://localhost:3000/api/tasks')
+                    .then(res => {
+                        if (res.status !== 200) {
+                            console.log('Could not fetch tasks. Status Code: ' + res.status);
                             return;
                         }
-                        fetch('http://localhost:3000/api/tasks')
-                            .then(res => {
-                                if (res.status !== 200) {
-                                    console.log('Could not fetch tasks. Status Code: ' + res.status);
-                                    return;
-                                }
-                                res.json()
-                                    .then(json => this.setState({tasks: json.tasks, activeTask: initialActiveTask})) // todo activeTask state is not changed.
-                                    .catch(err => console.log(err));
-                            })
+                        console.log('initailAct: ', initialActiveTask);
+                        res.json()
+                            .then(json => this.setState({tasks: json.tasks, activeTask: initialActiveTask})) // todo activeTask state is not changed.
                             .catch(err => console.log(err));
                     })
                     .catch(err => console.log(err));
-            }).catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
         }
     }
 
@@ -150,7 +151,7 @@ class Timer extends React.Component {
     handleOnBlur(event) {
         console.log('on blur');
         if (this.state.activeTask.id > 0) {
-            console.log('create task');
+            console.log('update task');
             // update
             fetch('http://localhost:3000/api/tasks/', {
                 method: 'put',
@@ -195,7 +196,15 @@ class Timer extends React.Component {
             <div>
                 <div className="timer-active-task-row">
                     <div className="ttr-main">
-                        <div><input type="text" onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onChange={this.handleChange} /></div>
+                        <div>
+                            <input 
+                                type="text" 
+                                onFocus={this.handleOnFocus} 
+                                onBlur={this.handleOnBlur} 
+                                onChange={this.handleChange} 
+                                value={this.state.activeTask.description}
+                            />
+                        </div>
                     </div>
                     <div className="ttr-secondary">
                         secondary
