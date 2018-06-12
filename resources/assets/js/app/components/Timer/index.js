@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskRow from './TaskRow';
 
-const initialActiveTask = {
+var emptyTask = {
     id: 0,
     description: '',
     projectId: 0,
@@ -20,7 +20,7 @@ class Timer extends React.Component {
 
         this.state = {
             tasks: [],
-            activeTask: initialActiveTask,
+            'activeTask': Object.assign({}, emptyTask),
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,6 +41,8 @@ class Timer extends React.Component {
 
     toggleTimer() {
         console.log('toggle timer');
+        console.log('initailAct: ', emptyTask);
+
         let activeTask = this.state.activeTask;
         const date = new Date();
         activeTask.tzOffset = (date.getTimezoneOffset() / 60) * -1;
@@ -101,9 +103,9 @@ class Timer extends React.Component {
                             console.log('Could not fetch tasks. Status Code: ' + res.status);
                             return;
                         }
-                        console.log('initailAct: ', initialActiveTask);
+                        console.log('initailAct: ', emptyTask);
                         res.json()
-                            .then(json => this.setState({tasks: json.tasks, activeTask: initialActiveTask})) // todo activeTask state is not changed.
+                            .then(json => this.setState({tasks: json.tasks, activeTask: emptyTask})) // todo activeTask state is not changed.
                             .catch(err => console.log(err));
                     })
                     .catch(err => console.log(err));
