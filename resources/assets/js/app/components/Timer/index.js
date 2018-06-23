@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskRow from './TaskRow';
-import qs from 'qs';
 import Ajax from '../../core/Helpers/Ajax';
+import DateHelper from '../../core/Helpers/Date';
 
 var emptyTask = {
     id: 0,
@@ -26,179 +26,95 @@ class Timer extends React.Component {
         };
 
         this.ajaxUrl = 'http://localhost:3000/api/tasks/';
-        this.ajax = new Ajax( this.ajaxUrl );
+        this.ajax = new Ajax( {url: this.ajaxUrl} );
+        this.date = new DateHelper;
 
         this.handleChange = this.handleChange.bind(this);
         this.handleOnFocus = this.handleOnFocus.bind(this);
         this.handleOnBlur = this.handleOnBlur.bind(this); 
         this.toggleTimer = this.toggleTimer.bind(this);
         this.createTask = this.createTask.bind(this);
-    }
-
-    dateToMysql(dateObj) {
-        var hours = (dateObj.getHours() < 10) ? "0" + dateObj.getHours().toString() : dateObj.getHours();
-        var minutes = (dateObj.getMinutes() < 10) ? "0" + dateObj.getMinutes().toString() : dateObj.getMinutes();
-        var seconds = (dateObj.getSeconds() < 10) ? "0" + dateObj.getSeconds().toString() : dateObj.getSeconds();
-        var month = ((dateObj.getMonth() + 1) < 10) ? "0" + (dateObj.getMonth() + 1).toString() : (dateObj.getMonth() + 1);
-        var day = (dateObj.getDate() < 10) ? "0" + dateObj.getDate().toString() : dateObj.getDate();
-
-        return dateObj.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+        this.updateTask = this.updateTask.bind(this);
+        this.getTasks = this.getTasks.bind(this);
     }
 
     toggleTimer() {
-        console.log('toggle timer');
-        console.log('initailAct: ', emptyTask);
-
         let activeTask = this.state.activeTask;
         const date = new Date();
-        activeTask.tzOffset = (date.getTimezoneOffset() / 60) * -1;
         const region = new Intl.DateTimeFormat();
         const regionValues = region.resolvedOptions();
         activeTask.tzName = regionValues.timeZone;
+        activeTask.tzOffset = (date.getTimezoneOffset() / 60) * -1;
 
-        if (this.state.activeTask.startTime === 0) {
-            activeTask.startTime = this.dateToMysql(date);
+        if (activeTask.startTime === 0) {
+
+            activeTask.startTime = this.date.toMysqlDateTime(date);
             activeTask.activeButton = 'stop';
-            this.setState({activeTask});
-            if (this.state.activeTask.id > 0) {
-                console.log('start timer');
-                // update
-                fetch('http://localhost:3000/api/tasks/', {
-                    method: 'put',
-                    cache: 'no-cache',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(activeTask),
-                }).then(response => {
-                    response.json()
-                        .then(json => {
-                            console.log(json);
-                            if (response.status !== 200) {
-                                console.log('Could not update task. Status Code: ' + response.status);
-                                return;
-                            }
-                        })
-                        .catch(err => console.log(err));
-                }).catch(err => console.log(err));
-            } else {
-                // create a new task
-                console.log('toggle create a new task.');
-                fetch('http://localhost:3000/api/tasks/', {
-                    method: 'post',
-                    cache: 'no-cache',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(activeTask),
-                }).then(response => {
-                    response.json()
-                        .then(json => {
-                            console.log(json);
-                            if (response.status !== 200) {
-                                console.log('Could not create task. Status Code: ' + response.status);
-                                return;
-                            }
-                            activeTask.id = json.task.id;
-                            this.setState({activeTask});
-                        })
-                        .catch(err => console.log(err));
-                }).catch(err => console.log(err));
-                
+
+            if (activeTask.id > 0) {
+                this.updateTask(activeTask);
+                return;
             }
-        } else {
-            console.log('stop timer');
-            activeTask.endTime = this.dateToMysql(date);
-            // update
-            fetch('http://localhost:3000/api/tasks/', {
-                method: 'put',
-                cache: 'no-cache',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(activeTask),
-            })
-            .then(response => {
-                if (response.status !== 200) {
-                    console.log('Could not update task. Status Code: ' + response.status);
-                    throw new Error(`The task could not be updated on the server. HTTP Status: ${response.status}.`);
-                }
-                return response.json();
-            })
-            .then(json => {
-                console.log(json);
-                fetch('http://localhost:3000/api/tasks')
-                    .then(res => {
-                        if (res.status !== 200) {
-                            console.log('Could not fetch tasks. Status Code: ' + res.status);
-                            return;
-                        }
-                        console.log('initailAct: ', emptyTask);
-                        res.json()
-                            .then(json => this.setState({tasks: json.tasks, activeTask: emptyTask})) // todo activeTask state is not changed.
-                            .catch(err => console.log(err));
-                    })
-                    .catch(err => console.log(err));
-            })
-            .catch(err => console.log(err));
-        }
+
+            this.createTask(activeTask);
+                
+        } 
+
+        activeTask.endTime = this.date.toMysqlDateTime(date);
+
+        // stop timer and clear activeTask
+        this.updateTask(activeTask, true);
+
+        // refresh tasks list
+        this.getTasks();
     }
 
-    handleChange(event) {
-        const description = event.target.value;
-        const activeTask = this.state.activeTask;
-        activeTask.description = description;
-        this.setState({activeTask});
-    }
-
-    handleOnFocus(event) {
-        this.createTask();
-    }
-    
-    createTask(task) {
-        let activeTask = this.state.activeTask;
-        
-        if (activeTask.id !== 0) {
-            return;
-        }
-
-        this.ajax.post( qs.stringify(activeTask) )
-            .then(res => this.setState( {activeTask: Object.assign(activeTask, res.task)} ))
-            .catch(err => console.log('Task could not be created. Error: ', err));
-    }
-
-    handleOnBlur(event) {
-        console.log('on blur');
-        if (this.state.activeTask.id > 0) {
-            console.log('update task');
-            // update
-            fetch('http://localhost:3000/api/tasks/', {
-                method: 'put',
-                cache: 'no-cache',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(this.state.activeTask),
-            }).then(response => {
-                response.json()
-                    .then(json => {
-                        console.log(json);
-                        if (response.status !== 200) {
-                            console.log('Could not update task. Status Code: ' + response.status);
-                            return;
-                        }
-                    })
-                    .catch(err => console.log(err));
-            }).catch(err => console.log(err));
-        }
-    }
-
-    componentDidMount() {
-        
+    getTasks() {
         this.ajax.get()
             .then(res => this.setState({tasks: res.tasks}))
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
+    }
+    
+    createTask(task) {
+        
+        if (task.id != 0)
+            return;
 
+        this.ajax.post( task )
+            .then(res => this.setState( {activeTask: Object.assign(task, res.task)} ))
+            .catch(err => console.log('Task could not be created. Error: ', err));
+    }
+
+    updateTask(task, clearActiveTask=false) {
+
+        if (task.id == 0)
+            return;
+
+        // let isActiveTask = false;
+        // if (task.activeButton != undefined) 
+        //     isActiveTask = true;
+
+        this.ajax.put( task )
+            .then(res => this.setState( { activeTask: clearActiveTask ? emptyTask : Object.assign(task, res.task) } ))
+            .catch(err => console.log('Task could not be updated. Error: ', err));
+    }
+
+    handleOnBlur() {
+        this.updateTask(this.state.activeTask);
+    }
+
+    handleChange(event) {
+        const activeTask = this.state.activeTask;
+        activeTask.description = event.target.value;
+        this.setState({activeTask});
+    }
+
+    handleOnFocus() {
+        this.createTask(this.state.activeTask);
+    }
+
+    componentDidMount() {
+        this.getTasks();
     }
 
     render() {

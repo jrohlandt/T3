@@ -1,11 +1,14 @@
 import axios from 'axios';
+import qs from 'qs';
+
 
 class Ajax {
 
-	constructor(url) {
-		this.url = url;
+	constructor(config) {
+		this.url = config.url;
+		this.urlencode = config.urlencode !== undefined ? config.urlencode : true;
 	}
-	
+
 	/**
 	 * Send a POST request to the given URL.
 	 *
@@ -42,7 +45,12 @@ class Ajax {
 		return this.send( 'delete', data );
 	}
 
-	send( requestType, data ) {
+	send( requestType, data={} ) {
+
+		if ( data.length > 0 && this.urlencode ) {
+			data = qs.stringify(data);
+		}
+
 		return new Promise(
 			( resolve, reject ) => {
 				axios[ requestType.toLowerCase() ]( this.url, data )
