@@ -1,0 +1,5 @@
+Bug list
+---------
+
+1. If you click start and almost immediately thereafter you press stop. The activeTask will be updated but the activeTask state will not update and you will
+be unable to create or start a new task.

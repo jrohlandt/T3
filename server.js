@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser'); // populates req.body otherwise it will be undefined.
 const multer = require('multer');
 const upload = multer(); // for parsing multipart/form-data
+const Sequelize = require('sequelize');
 
 const app = express();
 app.use(morgan('dev'));
@@ -20,14 +21,66 @@ app.get('/api', (req, res) => res.status(200).json('welcome to api'));
 // INDEX/LIST
 app.get('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
+    const Op = Sequelize.Op;
     try {
         const tasks = await Tasks.all({
+            where: {
+                startTime: {
+                    [Op.gt]: '2018-01-01 00:00:00'
+                },
+                endTime: {
+                    [Op.gt]: '2018-01-01 00:00:00'
+                }
+            },
             order: [
                 ['startTime', 'DESC'],
             ],
         });
 
+        
+
         res.status(200).json({tasks: tasks});                
+    } 
+    catch (err) {
+        console.log(err);
+    }
+
+});
+
+function taskIsActive(task) {
+    return new Date(task.startTime).getTime() == 0 || new Date(task.endTime).getTime() == 0;
+}
+
+function taskIsStarted(task) {
+    return new Date(task.startTime).getTime() != 0;
+}
+
+// Get the active task.
+app.get('/api/tasks/active', async (req, res) => {
+    const Tasks = require('./app/models/').tasks;
+    try {
+        // Fetch only the last created started task.
+        const tasks = await Tasks.all({
+            order: [
+                ['createdAt', 'DESC'],
+            ],
+            limit: 1,
+        });
+
+        let task = tasks[0];
+        if (taskIsActive(task)) {
+
+            let started = true;
+            if ( ! taskIsStarted(task) ) {
+                task.startTime = 0;
+                started = false;
+            }
+
+            res.status(200).json({task: task, started}); 
+            return;       
+        }
+
+        res.status(200).json({message: 'There is no active task.'});
     } 
     catch (err) {
         console.log(err);

@@ -29,22 +29,24 @@ class Timer extends React.Component {
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleOnFocus = this.handleOnFocus.bind(this);
-        this.handleOnBlur = this.handleOnBlur.bind(this); 
-        this.toggleTimer = this.toggleTimer.bind(this);
-        this.createTask = this.createTask.bind(this);
-        this.updateTask = this.updateTask.bind(this);
-        this.getTasks = this.getTasks.bind(this);
+        this.handleChange   = this.handleChange.bind(this);
+        this.handleOnFocus  = this.handleOnFocus.bind(this);
+        this.handleOnBlur   = this.handleOnBlur.bind(this); 
+        this.toggleTimer    = this.toggleTimer.bind(this);
+        this.createTask     = this.createTask.bind(this);
+        this.updateTask     = this.updateTask.bind(this);
+        this.getTasks       = this.getTasks.bind(this);
+        this.getActiveTask  = this.getActiveTask.bind(this);
     }
 
     toggleTimer() {
-        let activeTask = this.state.activeTask;
-        const date = new Date();
-        const region = new Intl.DateTimeFormat();
-        const regionValues = region.resolvedOptions();
-        activeTask.tzName = regionValues.timeZone;
-        activeTask.tzOffset = (date.getTimezoneOffset() / 60) * -1;
+
+        let activeTask          = this.state.activeTask;
+        const date              = new Date();
+        const region            = new Intl.DateTimeFormat();
+        const regionValues      = region.resolvedOptions();
+        activeTask.tzName       = regionValues.timeZone;
+        activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
 
         if (activeTask.startTime === 0) {
 
@@ -62,17 +64,30 @@ class Timer extends React.Component {
 
         activeTask.endTime = this.date.toMysqlDateTime(date);
 
-        // stop timer and clear activeTask
-        this.updateTask(activeTask, true);
-
-        // refresh tasks list
-        this.getTasks();
+        // Stop timer and refresh tasks list.
+        this.stopActiveTask(activeTask);
     }
 
     getTasks() {
         this.ajax.get()
             .then(res => this.setState({tasks: res.tasks}))
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
+    }
+
+    getActiveTask() {
+        const ajax = new Ajax({ url: this.ajaxUrl + 'active' });
+        ajax.get()
+            .then(res => {
+
+                if (res.task == undefined) 
+                    return;
+
+                console.log('activeTask: ', res);
+                let activeTask = Object.assign(this.state.activeTask, res.task);
+                activeTask.activeButton = res.started ? 'stop' : 'start';
+                this.setState({ activeTask });
+            })
+            .catch(err => console.log('Could not fetch active task. Error: ', err));
     }
     
     createTask(task) {
@@ -85,8 +100,7 @@ class Timer extends React.Component {
             .catch(err => console.log('Task could not be created. Error: ', err));
     }
 
-    updateTask(task, clearActiveTask=false) {
-
+    stopActiveTask(task, clearActiveTask=true ) {
         if (task.id == 0)
             return;
 
@@ -95,7 +109,20 @@ class Timer extends React.Component {
         //     isActiveTask = true;
 
         this.ajax.put( task )
-            .then(res => this.setState( { activeTask: clearActiveTask ? emptyTask : Object.assign(task, res.task) } ))
+            .then(res => {
+                this.setState( { activeTask: clearActiveTask ? emptyTask : Object.assign(task, res.task) } );
+                this.getTasks();
+            })
+            .catch(err => console.log('Task could not be updated. Error: ', err));
+    }
+
+    updateTask(task) {
+
+        if (task.id == 0)
+            return;
+
+        this.ajax.put( task )
+            .then(res => this.setState( { activeTask: Object.assign(task, res.task) } ))
             .catch(err => console.log('Task could not be updated. Error: ', err));
     }
 
@@ -115,6 +142,7 @@ class Timer extends React.Component {
 
     componentDidMount() {
         this.getTasks();
+        this.getActiveTask();
     }
 
     render() {
