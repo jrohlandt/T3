@@ -75,6 +75,30 @@ class Timer extends React.Component {
                         })
                         .catch(err => console.log(err));
                 }).catch(err => console.log(err));
+            } else {
+                // create a new task
+                console.log('toggle create a new task.');
+                fetch('http://localhost:3000/api/tasks/', {
+                    method: 'post',
+                    cache: 'no-cache',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(activeTask),
+                }).then(response => {
+                    response.json()
+                        .then(json => {
+                            console.log(json);
+                            if (response.status !== 200) {
+                                console.log('Could not create task. Status Code: ' + response.status);
+                                return;
+                            }
+                            activeTask.id = json.task.id;
+                            this.setState({activeTask});
+                        })
+                        .catch(err => console.log(err));
+                }).catch(err => console.log(err));
+                
             }
         } else {
             console.log('stop timer');
@@ -194,6 +218,8 @@ class Timer extends React.Component {
     render() {
 
         const tasksRows = this.state.tasks.map((t, i) => <TaskRow task={t} key={t.id} />);
+        const activeTask = this.state.activeTask;
+
         return (
             <div>
                 <div className="timer-active-task-row">
@@ -204,7 +230,7 @@ class Timer extends React.Component {
                                 onFocus={this.handleOnFocus} 
                                 onBlur={this.handleOnBlur} 
                                 onChange={this.handleChange} 
-                                value={this.state.activeTask.description}
+                                value={activeTask.description}
                             />
                         </div>
                     </div>
@@ -212,7 +238,7 @@ class Timer extends React.Component {
                         secondary
                     </div>
                     <div className="ttr-last">
-                        <button onClick={this.toggleTimer}>{this.state.activeTask.activeButton}</button>
+                        <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
                     </div>
                 </div>
                 {tasksRows}

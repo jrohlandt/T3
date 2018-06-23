@@ -21,7 +21,11 @@ app.get('/api', (req, res) => res.status(200).json('welcome to api'));
 app.get('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
     try {
-        const tasks = await Tasks.all();
+        const tasks = await Tasks.all({
+            order: [
+                ['startTime', 'DESC'],
+            ]
+        });
         res.status(200).json({tasks: tasks})                
     } catch (err) {
         console.log(err);
