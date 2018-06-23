@@ -1,5 +1,7 @@
 import React from 'react';
 import TaskRow from './TaskRow';
+import qs from 'qs';
+import Ajax from '../../core/Helpers/Ajax';
 
 var emptyTask = {
     id: 0,
@@ -23,10 +25,14 @@ class Timer extends React.Component {
             'activeTask': Object.assign({}, emptyTask),
         };
 
+        this.ajaxUrl = 'http://localhost:3000/api/tasks/';
+        this.ajax = new Ajax( this.ajaxUrl );
+
         this.handleChange = this.handleChange.bind(this);
         this.handleOnFocus = this.handleOnFocus.bind(this);
         this.handleOnBlur = this.handleOnBlur.bind(this); 
-        this.toggleTimer = this.toggleTimer.bind(this);      
+        this.toggleTimer = this.toggleTimer.bind(this);
+        this.createTask = this.createTask.bind(this);
     }
 
     dateToMysql(dateObj) {
@@ -146,33 +152,20 @@ class Timer extends React.Component {
     }
 
     handleOnFocus(event) {
-        console.log('on focus');
+        this.createTask();
+    }
+    
+    createTask(task) {
         let activeTask = this.state.activeTask;
-        if (activeTask.id === 0) {
-            console.log('create task');
-            // create
-            fetch('http://localhost:3000/api/tasks/', {
-                method: 'post',
-                cache: 'no-cache',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(activeTask),
-            }).then(response => {
-                response.json()
-                    .then(json => {
-                        console.log(json);
-                        if (response.status !== 200) {
-                            console.log('Could not create task. Status Code: ' + response.status);
-                            return;
-                        }
-                        activeTask.id = json.task.id;
-                        this.setState({activeTask});
-                    })
-                    .catch(err => console.log(err));
-            }).catch(err => console.log(err));
+        
+        if (activeTask.id !== 0) {
+            return;
         }
-    }   
+
+        this.ajax.post( qs.stringify(activeTask) )
+            .then(res => this.setState( {activeTask: Object.assign(activeTask, res.task)} ))
+            .catch(err => console.log('Task could not be created. Error: ', err));
+    }
 
     handleOnBlur(event) {
         console.log('on blur');
@@ -202,17 +195,10 @@ class Timer extends React.Component {
 
     componentDidMount() {
         
-        fetch('http://localhost:3000/api/tasks')
-            .then(res => {
-                if (res.status !== 200) {
-                    console.log('Could not fetch tasks. Status Code: ' + res.status);
-                    return;
-                }
-                res.json()
-                    .then(json => this.setState({tasks: json.tasks}))
-                    .catch(err => console.log(err));
-            })
-            .catch(err => console.log(err));
+        this.ajax.get()
+            .then(res => this.setState({tasks: res.tasks}))
+            .catch(err => console.log('Could not fetch tasks. Error: ', err));
+
     }
 
     render() {

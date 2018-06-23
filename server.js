@@ -24,10 +24,12 @@ app.get('/api/tasks', async (req, res) => {
         const tasks = await Tasks.all({
             order: [
                 ['startTime', 'DESC'],
-            ]
+            ],
         });
-        res.status(200).json({tasks: tasks})                
-    } catch (err) {
+
+        res.status(200).json({tasks: tasks});                
+    } 
+    catch (err) {
         console.log(err);
     }
 
@@ -39,7 +41,8 @@ app.post('/api/tasks', async (req, res) => {
 
     try {
         const body = req.body;
-        if (body.id !== 0) {
+        console.log(req.body.id);
+        if (body.id != 0) {
             return res.status(200).json({
                 message: `Task with id: ${body.id} has already been created.`,
                 task: body,
@@ -53,7 +56,8 @@ app.post('/api/tasks', async (req, res) => {
             message: 'Task has been created!',
             task: task,
         });
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).json({
             message: 'Task could not be created.',
             error: err,
