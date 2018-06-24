@@ -21,8 +21,8 @@ class Timer extends React.Component {
         super(props);
 
         this.state = {
-            tasks: [],
-            'activeTask': Object.assign({}, emptyTask),
+            tasks: {},
+            activeTask: Object.assign({}, emptyTask),
         };
 
         this.ajaxUrl = 'http://localhost:3000/api/tasks/';
@@ -71,17 +71,33 @@ class Timer extends React.Component {
     getTasks() {
         this.ajax.get()
             .then(res => {
+
+                // Format the display times and duration for each task.
                 const tasks = res.tasks.map((t, i) => {
                     const durationInSeconds = this.date.mysqlToSeconds(t.endTime) - this.date.mysqlToSeconds(t.startTime);
-                    t.displayStartTime = this.date.toMysqlDateTime(new Date(t.startTime), true);
-                    t.displayEndTime = this.date.toMysqlDateTime(new Date(t.endTime), true);
-                    t.displayDuration =  this.date.durationForDisplay(durationInSeconds);
+                    t.displayStartTime      = this.date.toMysqlDateTime(new Date(t.startTime), true);
+                    t.displayEndTime        = this.date.toMysqlDateTime(new Date(t.endTime), true);
+                    t.displayDuration       =  this.date.durationForDisplay(durationInSeconds);
 
-                    
-                    // console.log(startTimeInSeconds, endTimeInSeconds, durationInSeconds, duration);
                     return t;
                 });
-                this.setState({tasks: tasks});
+
+                // Now create a object that stores each task by it's date.
+                let tasksByDate = {};
+
+                for ( let i=0; i < tasks.length; i++ ) {
+
+                    let task    = tasks[i];
+                    let dateKey = this.date.toMysqlDate(new Date(task.startTime));
+                    
+                    if ( ! tasksByDate.hasOwnProperty(dateKey) ) {
+                        tasksByDate[dateKey] = [];
+                    }
+
+                    tasksByDate[dateKey].push(task);
+                }
+
+                this.setState({tasks: tasksByDate});
             })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
     }
@@ -94,9 +110,9 @@ class Timer extends React.Component {
                 if (res.task == undefined) 
                     return;
 
-                console.log('activeTask: ', res);
                 let activeTask = Object.assign(this.state.activeTask, res.task);
                 activeTask.activeButton = res.started ? 'stop' : 'start';
+
                 this.setState({ activeTask });
             })
             .catch(err => console.log('Could not fetch active task. Error: ', err));
@@ -115,10 +131,6 @@ class Timer extends React.Component {
     stopActiveTask(task, clearActiveTask=true ) {
         if (task.id == 0)
             return;
-
-        // let isActiveTask = false;
-        // if (task.activeButton != undefined) 
-        //     isActiveTask = true;
 
         this.ajax.put( task )
             .then(res => {
@@ -145,6 +157,7 @@ class Timer extends React.Component {
     handleChange(event) {
         const activeTask = this.state.activeTask;
         activeTask.description = event.target.value;
+
         this.setState({activeTask});
     }
 
@@ -159,7 +172,19 @@ class Timer extends React.Component {
 
     render() {
 
-        const tasksRows = this.state.tasks.map((t, i) => <TaskRow task={t} key={t.id} />);
+        let tasksRows = [];
+        let dateKey;
+        const tasks = this.state.tasks;
+
+        for (dateKey in tasks) {
+            if ( ! tasks.hasOwnProperty(dateKey) ) {
+                continue;
+            }
+
+            tasksRows.push(<h3>{dateKey}</h3>);
+            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} key={t.id} />));
+        }
+
         const activeTask = this.state.activeTask;
 
         return (

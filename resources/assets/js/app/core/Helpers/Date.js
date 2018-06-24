@@ -15,6 +15,13 @@ class DateHelper {
         return dateObj.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
     }
 
+    toMysqlDate(dateObj) {
+        const month = ((dateObj.getMonth() + 1) < 10) ? "0" + (dateObj.getMonth() + 1).toString() : (dateObj.getMonth() + 1);
+        const day = (dateObj.getDate() < 10) ? "0" + dateObj.getDate().toString() : dateObj.getDate();
+
+        return dateObj.getFullYear() + "-" + month + "-" + day;
+    }
+
     /**
      * 
      * @param {string} dateTimeString e.g. '2018-06-24 11:00:21'
