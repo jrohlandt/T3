@@ -102,7 +102,8 @@ app.post('/api/tasks', async (req, res) => {
             });
         }
         const task = await Tasks.create({
-            description: body.description
+            description: body.description,
+            projectId: body.projectId,
         });
 
         res.status(200).json({
@@ -141,7 +142,8 @@ app.put('/api/tasks', async (req, res) => {
             startTime: body.startTime,
             endTime: body.endTime,
             tzOffset: body.tzOffset,
-            tzName: body.tzName
+            tzName: body.tzName,
+            projectId: body.projectId,
         });
 
         res.status(200).json({

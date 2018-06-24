@@ -23,6 +23,12 @@ class Timer extends React.Component {
         this.state = {
             tasks: {},
             activeTask: Object.assign({}, emptyTask),
+            projects: [
+                { id: 0, name: 'no project' },
+                { id: 1, name: 'Webinarignition' },
+                { id: 2, name: 'Provely' },
+                { id: 3, name: 'Heatmaptracker' },
+            ],
         };
 
         this.ajaxUrl = 'http://localhost:3000/api/tasks/';
@@ -37,6 +43,7 @@ class Timer extends React.Component {
         this.updateTask     = this.updateTask.bind(this);
         this.getTasks       = this.getTasks.bind(this);
         this.getActiveTask  = this.getActiveTask.bind(this);
+        this.handleProjectChange = this.handleProjectChange.bind(this);
     }
 
     toggleTimer() {
@@ -165,6 +172,14 @@ class Timer extends React.Component {
         this.createTask(this.state.activeTask);
     }
 
+    handleProjectChange(e) {
+        let activeTask = this.state.activeTask;
+        activeTask.projectId = e.target.value;
+
+        this.setState({activeTask});
+        e.preventDefault();
+    }
+
     componentDidMount() {
         this.getTasks();
         this.getActiveTask();
@@ -182,8 +197,10 @@ class Timer extends React.Component {
             }
 
             tasksRows.push(<h3 key={dateKey} >{dateKey}</h3>);
-            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} key={t.id} />));
+            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} projects={this.state.projects} key={t.id} />));
         }
+
+        const projectOptions = this.state.projects.map((p, i) => <option value={p.id} key={p.id} >{p.name}</option>);
 
         const activeTask = this.state.activeTask;
 
@@ -202,7 +219,11 @@ class Timer extends React.Component {
                         </div>
                     </div>
                     <div className="ttr-secondary">
-                        secondary
+                        <label> Project 
+                            <select value={this.state.activeTask.projectId} onChange={this.handleProjectChange} >
+                                {projectOptions}
+                            </select>
+                        </label>
                     </div>
                     <div className="ttr-last">
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
