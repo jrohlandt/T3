@@ -181,7 +181,7 @@ class Timer extends React.Component {
                 continue;
             }
 
-            tasksRows.push(<h3>{dateKey}</h3>);
+            tasksRows.push(<h3 key={dateKey} >{dateKey}</h3>);
             tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} key={t.id} />));
         }
 
