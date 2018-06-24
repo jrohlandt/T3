@@ -11,7 +11,7 @@ const TaskRow = (props) => {
                 secondary
             </div>
             <div className="ttr-last">
-                last
+                {t.displayStartTime} - {t.displayEndTime} | {t.displayDuration}
             </div>
         </div>
     );

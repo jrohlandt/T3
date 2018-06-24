@@ -70,7 +70,19 @@ class Timer extends React.Component {
 
     getTasks() {
         this.ajax.get()
-            .then(res => this.setState({tasks: res.tasks}))
+            .then(res => {
+                const tasks = res.tasks.map((t, i) => {
+                    const durationInSeconds = this.date.mysqlToSeconds(t.endTime) - this.date.mysqlToSeconds(t.startTime);
+                    t.displayStartTime = this.date.toMysqlDateTime(new Date(t.startTime), true);
+                    t.displayEndTime = this.date.toMysqlDateTime(new Date(t.endTime), true);
+                    t.displayDuration =  this.date.durationForDisplay(durationInSeconds);
+
+                    
+                    // console.log(startTimeInSeconds, endTimeInSeconds, durationInSeconds, duration);
+                    return t;
+                });
+                this.setState({tasks: tasks});
+            })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
     }
 
