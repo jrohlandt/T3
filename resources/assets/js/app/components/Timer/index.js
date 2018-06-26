@@ -42,16 +42,17 @@ class Timer extends React.Component {
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
-        this.handleChange   = this.handleChange.bind(this);
-        this.handleOnFocus  = this.handleOnFocus.bind(this);
-        this.handleOnBlur   = this.handleOnBlur.bind(this); 
-        this.toggleTimer    = this.toggleTimer.bind(this);
-        this.createTask     = this.createTask.bind(this);
-        this.updateTask     = this.updateTask.bind(this);
-        this.getTasks       = this.getTasks.bind(this);
-        this.getActiveTask  = this.getActiveTask.bind(this);
-        this.handleProjectChange = this.handleProjectChange.bind(this);
-        this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.handleChange           = this.handleChange.bind(this);
+        this.handleOnFocus          = this.handleOnFocus.bind(this);
+        this.handleOnBlur           = this.handleOnBlur.bind(this); 
+        this.toggleTimer            = this.toggleTimer.bind(this);
+        this.createTask             = this.createTask.bind(this);
+        this.updateTask             = this.updateTask.bind(this);
+        this.getTasks               = this.getTasks.bind(this);
+        this.getActiveTask          = this.getActiveTask.bind(this);
+        this.handleProjectChange    = this.handleProjectChange.bind(this);
+        this.handleTypeChange       = this.handleTypeChange.bind(this);
+        this.stopActiveTask         = this.stopActiveTask.bind(this);
     }
 
     toggleTimer() {
@@ -144,12 +145,13 @@ class Timer extends React.Component {
     }
 
     stopActiveTask(task, clearActiveTask=true ) {
+        console.log('stopActiveTask', 'emptyTask: ', emptyTask, clearActiveTask, task);
         if (task.id == 0)
             return;
 
         this.ajax.put( task )
             .then(res => {
-                this.setState( { activeTask: clearActiveTask ? emptyTask : Object.assign(task, res.task) } );
+                this.setState( { activeTask: clearActiveTask ? Object.assign({}, emptyTask) : Object.assign(task, res.task) } );
                 this.getTasks();
             })
             .catch(err => console.log('Task could not be updated. Error: ', err));
