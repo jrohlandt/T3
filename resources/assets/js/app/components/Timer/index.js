@@ -1,7 +1,10 @@
+'use strict';
+
 import React from 'react';
-import TaskRow from './TaskRow';
-import Ajax from '../../core/Helpers/Ajax';
-import DateHelper from '../../core/Helpers/Date';
+import TaskRow from './TaskRow.js';
+import Ajax from '../../core/Helpers/Ajax.js';
+import DateHelper from '../../core/Helpers/Date.js';
+import DropDown from './DropDown.js';
 
 var emptyTask = {
     id: 0,
@@ -15,6 +18,9 @@ var emptyTask = {
     tzOffset: 0,
     tzName: 'none',
 };
+
+
+
 
 class Timer extends React.Component {
 
@@ -31,7 +37,7 @@ class Timer extends React.Component {
                 { id: 3, name: 'Heatmaptracker' },
             ],
             types: [
-                { id: 0, name: '' },
+                { id: 0, name: 'none' },
                 { id: 1, name: 'ticket' },
                 { id: 2, name: 'bug fix' },
                 { id: 3, name: 'development' },
@@ -182,20 +188,18 @@ class Timer extends React.Component {
         this.createTask(this.state.activeTask);
     }
 
-    handleProjectChange(e) {
+    handleProjectChange(projectId) {
         let activeTask = this.state.activeTask;
-        activeTask.projectId = e.target.value;
+        activeTask.projectId = projectId;
 
         this.setState({activeTask});
-        e.preventDefault();
     }
 
-    handleTypeChange(e) {
+    handleTypeChange(typeId) {
         let activeTask = this.state.activeTask;
-        activeTask.typeId = e.target.value;
+        activeTask.typeId = typeId;
 
         this.setState({activeTask});
-        e.preventDefault();
     }
 
     componentDidMount() {
@@ -239,16 +243,17 @@ class Timer extends React.Component {
                         </div>
                     </div>
                     <div className="ttr-secondary">
-                        <label> Project 
-                            <select value={this.state.activeTask.projectId} onChange={this.handleProjectChange} >
-                                {projectOptions}
-                            </select>
-                        </label>
-                        <label> 
-                            <select value={this.state.activeTask.typeId} onChange={this.handleTypeChange} >
-                                {typeOptions}
-                            </select>
-                        </label>
+                        <DropDown 
+                            selected={activeTask.projectId} 
+                            handleChange={this.handleProjectChange} 
+                            options={this.state.projects}
+                        />
+                        <DropDown 
+                            selected={activeTask.typeId} 
+                            handleChange={this.handleTypeChange} 
+                            options={this.state.types} 
+                            displayIcon='tag'
+                        />
                     </div>
                     <div className="ttr-last">
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
