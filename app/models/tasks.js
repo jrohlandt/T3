@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     projectId: DataTypes.INTEGER,
     clientId: DataTypes.INTEGER,
+    typeId: DataTypes.INTEGER,
     startTime: DataTypes.DATE,
     endTime: DataTypes.DATE,
     tzOffset: DataTypes.TINYINT,

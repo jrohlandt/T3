@@ -144,6 +144,7 @@ app.put('/api/tasks', async (req, res) => {
             tzOffset: body.tzOffset,
             tzName: body.tzName,
             projectId: body.projectId,
+            typeId: body.typeId,
         });
 
         res.status(200).json({

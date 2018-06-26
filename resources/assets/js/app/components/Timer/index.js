@@ -8,6 +8,7 @@ var emptyTask = {
     description: '',
     projectId: 0,
     clientId: 0,
+    typeId: 0,
     activeButton: 'start',
     startTime: 0,
     endTime: 0,
@@ -29,6 +30,12 @@ class Timer extends React.Component {
                 { id: 2, name: 'Provely' },
                 { id: 3, name: 'Heatmaptracker' },
             ],
+            types: [
+                { id: 0, name: '' },
+                { id: 1, name: 'ticket' },
+                { id: 2, name: 'bug fix' },
+                { id: 3, name: 'development' },
+            ],
         };
 
         this.ajaxUrl = 'http://localhost:3000/api/tasks/';
@@ -44,6 +51,7 @@ class Timer extends React.Component {
         this.getTasks       = this.getTasks.bind(this);
         this.getActiveTask  = this.getActiveTask.bind(this);
         this.handleProjectChange = this.handleProjectChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
     }
 
     toggleTimer() {
@@ -180,6 +188,14 @@ class Timer extends React.Component {
         e.preventDefault();
     }
 
+    handleTypeChange(e) {
+        let activeTask = this.state.activeTask;
+        activeTask.typeId = e.target.value;
+
+        this.setState({activeTask});
+        e.preventDefault();
+    }
+
     componentDidMount() {
         this.getTasks();
         this.getActiveTask();
@@ -197,10 +213,12 @@ class Timer extends React.Component {
             }
 
             tasksRows.push(<h3 key={dateKey} >{dateKey}</h3>);
-            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} projects={this.state.projects} key={t.id} />));
+            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} projects={this.state.projects} types={this.state.types} key={t.id} />));
         }
 
         const projectOptions = this.state.projects.map((p, i) => <option value={p.id} key={p.id} >{p.name}</option>);
+        const typeOptions = this.state.types.map((t, i) => <option value={t.id} key={t.id} >{t.name}</option>);
+
 
         const activeTask = this.state.activeTask;
 
@@ -222,6 +240,11 @@ class Timer extends React.Component {
                         <label> Project 
                             <select value={this.state.activeTask.projectId} onChange={this.handleProjectChange} >
                                 {projectOptions}
+                            </select>
+                        </label>
+                        <label> 
+                            <select value={this.state.activeTask.typeId} onChange={this.handleTypeChange} >
+                                {typeOptions}
                             </select>
                         </label>
                     </div>

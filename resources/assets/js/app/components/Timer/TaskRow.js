@@ -12,6 +12,18 @@ const getProjectName = (projectId, projects) => {
     return 'no project';
 };
 
+const getTypeName = (typeId, types) => {
+    
+    for (let i=0; i < types.length; i++) {
+        let type = types[i];
+        if (type.id == typeId) {
+            return type.name;
+        }
+    }
+
+    return '';
+};
+
 const TaskRow = (props) => {
     const t = props.task;
     return (
@@ -21,6 +33,7 @@ const TaskRow = (props) => {
             </div>
             <div className="ttr-secondary">
                 {getProjectName(t.projectId, props.projects)}
+                | {getTypeName(t.typeId, props.types)}
             </div>
             <div className="ttr-last">
                 {t.displayStartTime} - {t.displayEndTime} | {t.displayDuration}
