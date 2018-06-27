@@ -175,6 +175,7 @@ class Timer extends React.Component {
         this.updateTask(this.state.activeTask);
     }
 
+    // todo change to handleDescriptionChange
     handleChange(event) {
         const activeTask = this.state.activeTask;
         activeTask.description = event.target.value;
@@ -191,6 +192,7 @@ class Timer extends React.Component {
         activeTask.projectId = projectId;
 
         this.setState({activeTask});
+        this.updateTask(activeTask);
     }
 
     handleTypeChange(typeId) {
@@ -198,6 +200,7 @@ class Timer extends React.Component {
         activeTask.typeId = typeId;
 
         this.setState({activeTask});
+        this.updateTask(activeTask);
     }
 
     componentDidMount() {
@@ -253,7 +256,14 @@ class Timer extends React.Component {
                             displayIcon='tag'
                         />
                     </div>
-                    <DisplayTimer startTime={this.state.activeTask.startTime} />
+
+                    <div>
+                        { 
+                            activeTask.startTime !== 0
+                                ? <DisplayTimer startTime={activeTask.startTime} />
+                                : ''
+                        }
+                    </div>
                     <div className="ttr-last" style={{marginBottom: '20px'}}>
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
                     </div>
