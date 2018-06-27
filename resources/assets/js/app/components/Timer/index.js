@@ -2,6 +2,7 @@
 
 import React from 'react';
 import TaskRow from './TaskRow.js';
+import DisplayTimer from './Timer';
 import Ajax from '../../core/Helpers/Ajax.js';
 import DateHelper from '../../core/Helpers/Date.js';
 import DropDown from './DropDown.js';
@@ -13,7 +14,7 @@ var emptyTask = {
     clientId: 0,
     typeId: 0,
     activeButton: 'start',
-    startTime: 0,
+    startTime: '1970-01-01 00:00:00',
     endTime: 0,
     tzOffset: 0,
     tzName: 'none',
@@ -70,7 +71,7 @@ class Timer extends React.Component {
         activeTask.tzName       = regionValues.timeZone;
         activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
 
-        if (activeTask.startTime === 0) {
+        if (new Date(activeTask.startTime).getTime() === 0) {
 
             activeTask.startTime = this.date.toMysqlDateTime(date);
             activeTask.activeButton = 'stop';
@@ -255,7 +256,8 @@ class Timer extends React.Component {
                             displayIcon='tag'
                         />
                     </div>
-                    <div className="ttr-last">
+                    <DisplayTimer startTime={activeTask.startTime} />
+                    <div className="ttr-last" style={{marginBottom: '20px'}}>
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
                     </div>
                 </div>
