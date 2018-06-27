@@ -39,8 +39,7 @@ class DropDown extends React.Component {
 
         let icon;
         let iconExpanded;
-        // const propsIcon = props.displayIcon || 'folder';
-        console.log('icon: ', props.displayIcon);
+
         switch (props.displayIcon) {
             case 'folder':
                 icon = <FaFolderO/>;

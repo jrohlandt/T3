@@ -10,27 +10,37 @@ class Timer extends React.Component {
         this.state = {
             duration: 0, // in seconds
             intervalId: 0,
+            started: false,
         };
 
         this.date = new DateHelper;
     }
 
     componentDidMount() {
-        const startTime = new Date(this.props.startTime).getTime() / 1000;
-        
-        console.log('timer mounted', startTime);
-        
+
+        console.log('timer mounted', this.props.startTime);
+       
         const intervalId = setInterval(() => {
 
             console.log('interval ');
-            if (startTime === 0) {
-                clearInterval(intervalId);
+            this.setState({intervalId});
+
+            if (this.props.startTime === 0) {
+                if (this.state.started === true) {
+                    this.setState({
+                        duration: 0,
+                        started: false,
+                    });
+                }
                 return;
             }
+    
+            const startTime = new Date(this.props.startTime).getTime();
+            const startTimeInSeconds = startTime / 1000;
             const currentTime = new Date().getTime() / 1000;
-            const duration = Math.round(currentTime - startTime);
+            const duration = Math.round(currentTime - startTimeInSeconds);
 
-            this.setState({intervalId, duration});
+            this.setState({duration, started: true});
 
         }, 1000);
     }
@@ -42,11 +52,8 @@ class Timer extends React.Component {
 
     render() {
 
-
-
         const duration = this.state.duration !== 0 ? this.date.durationForDisplay(this.state.duration) : '';
         return (
-
             <div>
                 {duration}
             </div>

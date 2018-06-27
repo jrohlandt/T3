@@ -14,14 +14,11 @@ var emptyTask = {
     clientId: 0,
     typeId: 0,
     activeButton: 'start',
-    startTime: '1970-01-01 00:00:00',
+    startTime: 0,
     endTime: 0,
     tzOffset: 0,
     tzName: 'none',
 };
-
-
-
 
 class Timer extends React.Component {
 
@@ -71,7 +68,7 @@ class Timer extends React.Component {
         activeTask.tzName       = regionValues.timeZone;
         activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
 
-        if (new Date(activeTask.startTime).getTime() === 0) {
+        if (activeTask.startTime === 0) {
 
             activeTask.startTime = this.date.toMysqlDateTime(date);
             activeTask.activeButton = 'stop';
@@ -256,7 +253,7 @@ class Timer extends React.Component {
                             displayIcon='tag'
                         />
                     </div>
-                    <DisplayTimer startTime={activeTask.startTime} />
+                    <DisplayTimer startTime={this.state.activeTask.startTime} />
                     <div className="ttr-last" style={{marginBottom: '20px'}}>
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
                     </div>
