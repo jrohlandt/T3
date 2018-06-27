@@ -6,6 +6,7 @@ const publicPath = path.resolve(__dirname, 'public');
 const jsPublicPath = publicPath + path.join('/', 'assets', 'js', 'app');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: {
@@ -16,6 +17,19 @@ module.exports = {
             'react-router-dom',
         ],
         app: path.resolve(__dirname, 'resources', 'assets', 'js', 'app', 'index.js'), 
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: 'vendor',
+                    enforce: true
+                },
+            }
+        },
+        runtimeChunk: false
     },
     output: {
         filename: '[name].[chunkhash].js',
@@ -48,6 +62,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new BundleAnalyzerPlugin(),
         new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
