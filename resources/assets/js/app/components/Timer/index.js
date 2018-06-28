@@ -2,10 +2,10 @@
 
 import React from 'react';
 import TaskRow from './TaskRow.js';
-import DisplayTimer from './Timer';
+
 import Ajax from '../../core/Helpers/Ajax.js';
 import DateHelper from '../../core/Helpers/Date.js';
-import DropDown from './DropDown.js';
+
 
 var emptyTask = {
     id: 0,
@@ -46,47 +46,47 @@ class Timer extends React.Component {
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
-        this.handleChange           = this.handleChange.bind(this);
-        this.handleOnFocus          = this.handleOnFocus.bind(this);
-        this.handleOnBlur           = this.handleOnBlur.bind(this); 
-        this.toggleTimer            = this.toggleTimer.bind(this);
+        // this.handleChange           = this.handleChange.bind(this);
+        // this.handleOnFocus          = this.handleOnFocus.bind(this);
+        // this.handleOnBlur           = this.handleOnBlur.bind(this); 
+        // this.toggleTimer            = this.toggleTimer.bind(this);
         this.createTask             = this.createTask.bind(this);
         this.updateTask             = this.updateTask.bind(this);
         this.getTasks               = this.getTasks.bind(this);
         this.getActiveTask          = this.getActiveTask.bind(this);
         this.handleProjectChange    = this.handleProjectChange.bind(this);
         this.handleTypeChange       = this.handleTypeChange.bind(this);
-        this.stopActiveTask         = this.stopActiveTask.bind(this);
+        // this.stopActiveTask         = this.stopActiveTask.bind(this);
     }
 
-    toggleTimer() {
+    // toggleTimer() {
 
-        let activeTask          = this.state.activeTask;
-        const date              = new Date();
-        const region            = new Intl.DateTimeFormat();
-        const regionValues      = region.resolvedOptions();
-        activeTask.tzName       = regionValues.timeZone;
-        activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
+    //     let activeTask          = this.state.activeTask;
+    //     const date              = new Date();
+    //     const region            = new Intl.DateTimeFormat();
+    //     const regionValues      = region.resolvedOptions();
+    //     activeTask.tzName       = regionValues.timeZone;
+    //     activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
 
-        if (activeTask.startTime === 0) {
+    //     if (activeTask.startTime === 0) {
 
-            activeTask.startTime = this.date.toMysqlDateTime(date);
-            activeTask.activeButton = 'stop';
+    //         activeTask.startTime = this.date.toMysqlDateTime(date);
+    //         activeTask.activeButton = 'stop';
 
-            if (activeTask.id > 0) {
-                this.updateTask(activeTask);
-                return;
-            }
+    //         if (activeTask.id > 0) {
+    //             this.updateTask(activeTask);
+    //             return;
+    //         }
 
-            this.createTask(activeTask);
+    //         this.createTask(activeTask);
                 
-        } 
+    //     } 
 
-        activeTask.endTime = this.date.toMysqlDateTime(date);
+    //     activeTask.endTime = this.date.toMysqlDateTime(date);
 
-        // Stop timer and refresh tasks list.
-        this.stopActiveTask(activeTask);
-    }
+    //     // Stop timer and refresh tasks list.
+    //     this.stopActiveTask(activeTask);
+    // }
 
     getTasks() {
         this.ajax.get()
@@ -127,10 +127,15 @@ class Timer extends React.Component {
         ajax.get()
             .then(res => {
 
-                if (res.task == undefined) 
-                    return;
+                let activeTask = {};
+                if (res.task == undefined) { 
+                    activeTask = Object.assign({}, emptyTask);
+                } else {
+                    activeTask = Object.assign({}, res.task);
+                }
+                    // return;
 
-                let activeTask = Object.assign(this.state.activeTask, res.task);
+                // let activeTask = Object.assign(this.state.activeTask, res.task);
                 activeTask.activeButton = res.started ? 'stop' : 'start';
 
                 this.setState({ activeTask });
@@ -148,44 +153,48 @@ class Timer extends React.Component {
             .catch(err => console.log('Task could not be created. Error: ', err));
     }
 
-    stopActiveTask(task, clearActiveTask=true ) {
-        console.log('stopActiveTask', 'emptyTask: ', emptyTask, clearActiveTask, task);
+    // stopActiveTask(task, clearActiveTask=true ) {
+    //     console.log('stopActiveTask', 'emptyTask: ', emptyTask, clearActiveTask, task);
+    //     if (task.id == 0)
+    //         return;
+
+    //     this.ajax.put( task )
+    //         .then(res => {
+    //             this.setState( { activeTask: clearActiveTask ? Object.assign({}, emptyTask) : Object.assign(task, res.task) } );
+    //             this.getTasks();
+    //         })
+    //         .catch(err => console.log('Task could not be updated. Error: ', err));
+    // }
+
+    updateTask(task) {
+        console.log('update tassssk', task);
         if (task.id == 0)
             return;
 
         this.ajax.put( task )
             .then(res => {
-                this.setState( { activeTask: clearActiveTask ? Object.assign({}, emptyTask) : Object.assign(task, res.task) } );
                 this.getTasks();
+                this.getActiveTask();
             })
             .catch(err => console.log('Task could not be updated. Error: ', err));
     }
 
-    updateTask(task) {
-
-        if (task.id == 0)
-            return;
-
-        this.ajax.put( task )
-            .then(res => this.setState( { activeTask: Object.assign(task, res.task) } ))
-            .catch(err => console.log('Task could not be updated. Error: ', err));
-    }
-
-    handleOnBlur() {
-        this.updateTask(this.state.activeTask);
-    }
+    // handleOnBlur() {
+    //     this.updateTask(this.state.activeTask);
+    // }
 
     // todo change to handleDescriptionChange
-    handleChange(event) {
-        const activeTask = this.state.activeTask;
-        activeTask.description = event.target.value;
+    // handleChange(event) {
+    //     const activeTask = this.state.activeTask;
+    //     activeTask.description = event.target.value;
 
-        this.setState({activeTask});
-    }
+    //     this.setState({activeTask});
+    // }
 
-    handleOnFocus() {
-        this.createTask(this.state.activeTask);
-    }
+    // handleOnFocus() {
+    //     console.log('focus create task');
+    //     this.createTask(this.state.activeTask);
+    // }
 
     handleProjectChange(projectId) {
         let activeTask = this.state.activeTask;
@@ -220,7 +229,15 @@ class Timer extends React.Component {
             }
 
             tasksRows.push(<h3 key={dateKey} >{dateKey}</h3>);
-            tasksRows.push(tasks[dateKey].map((t, i) => <TaskRow task={t} projects={this.state.projects} types={this.state.types} key={t.id} />));
+            tasksRows.push(tasks[dateKey].map((t, i) => 
+                <TaskRow 
+                    task={t} 
+                    projects={this.state.projects} 
+                    types={this.state.types} 
+                    key={t.id} 
+                    updateTask={this.updateTask}
+                />
+            ));
         }
 
         const projectOptions = this.state.projects.map((p, i) => <option value={p.id} key={p.id} >{p.name}</option>);
@@ -231,7 +248,7 @@ class Timer extends React.Component {
 
         return (
             <div>
-                <div className="timer-active-task-row">
+                {/* <div className="timer-active-task-row">
                     <div className="ttr-main">
                         <div>
                             <input 
@@ -263,11 +280,20 @@ class Timer extends React.Component {
                                 ? <DisplayTimer startTime={activeTask.startTime} />
                                 : ''
                         }
-                    </div>
-                    <div className="ttr-last" style={{marginBottom: '20px'}}>
+                    </div> */}
+                    <TaskRow 
+                        task={activeTask} 
+                        projects={this.state.projects} 
+                        types={this.state.types} 
+                        key={activeTask.id} 
+                        createTask={this.createTask} 
+                        updateTask={this.updateTask}
+                        isActiveTask='true'
+                    />
+                    {/* <div className="ttr-last" style={{marginBottom: '20px'}}>
                         <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
-                    </div>
-                </div>
+                    </div> */}
+                {/* </div> */}
                 {tasksRows}
             </div>
         );
