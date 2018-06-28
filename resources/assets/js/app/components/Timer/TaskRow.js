@@ -35,7 +35,9 @@ class TaskRow extends React.Component {
 
         this.state = {
             isActiveTask: false,
-            task: {},
+            task: {
+                description: '',
+            },
         }
 
         this.date = new DateHelper;        
@@ -43,8 +45,10 @@ class TaskRow extends React.Component {
         this.createTask = this.createTask.bind(this);
         this.updateTask = this.updateTask.bind(this);
         this.toggleTimer = this.toggleTimer.bind(this);
-
+        this.handleProjectChange = this.handleProjectChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleDescriptionOnBlur = this.handleDescriptionOnBlur.bind(this);
     }
 
     handleDescriptionChange(event) {
@@ -52,6 +56,10 @@ class TaskRow extends React.Component {
         task.description = event.target.value;
 
         this.setState({task});
+    }
+
+    handleDescriptionOnBlur(event) {
+        this.updateTask();
     }
 
     createTask(task={}) {
@@ -63,16 +71,19 @@ class TaskRow extends React.Component {
     }
 
     updateTask(task={}) {
-        console.log('inside task;', task.length, task);
+
+        let t;
+        console.log('inside task;', Object.keys(task).length, task);
         if (Object.keys(task).length > 0) {
         console.log('inside 1');
-
-            this.props.updateTask(task);
+            t = Object.assign({}, task);
         } else {
         console.log('inside 2');
-
-            this.props.updateTask(this.state.task);
+            t = Object.assign({}, this.state.task);
         }
+        this.props.updateTask(t);
+        this.setState({task: t});
+
     }
 
     toggleTimer() {
@@ -104,6 +115,19 @@ class TaskRow extends React.Component {
         this.updateTask(activeTask);
     }
 
+    handleProjectChange(projectId) {
+        let task = Object.assign({}, this.state.task);
+        task.projectId = projectId;
+        this.updateTask(task);
+        // this.updateTask(Object.assign(this.state.task, {projectId}));
+    }
+
+    handleTypeChange(typeId) {
+        let task = Object.assign({}, this.state.task);
+        task.typeId = typeId;
+        this.updateTask(task);
+    }
+
     componentDidMount() {
         const p = this.props;
         const isActiveTask = p.isActiveTask != undefined ? p.isActiveTask : false;
@@ -117,28 +141,37 @@ class TaskRow extends React.Component {
             <div className="timer-task-row">
                 <div className="ttr-main">
                     <div>
-                            {
-                                this.state.isActiveTask
-                                    ?  <input 
-                                            type="text" 
-                                            onFocus={ this.createTask }
-                                            onBlur={ this.updateTask } 
-                                            onChange={ this.handleDescriptionChange } 
-                                            value={t.description}
-                                        />
-                                    : <input 
-                                            type="text" 
-                                            onBlur={ this.updateTask } 
-                                            onChange={ this.handleDescriptionChange } 
-                                            value={t.description}
-                                        />
-                            }
+                        {
+                            this.state.isActiveTask
+                                ?  <input 
+                                        type="text" 
+                                        onFocus={ this.createTask }
+                                        onBlur={ this.handleDescriptionOnBlur } 
+                                        onChange={ this.handleDescriptionChange } 
+                                        value={t.description}
+                                    />
+                                : <input 
+                                        type="text" 
+                                        onBlur={ this.handleDescriptionOnBlur } 
+                                        onChange={ this.handleDescriptionChange } 
+                                        value={t.description}
+                                    />
+                        }
                         
                     </div>
                 </div>
                 <div className="ttr-secondary">
-                    {getProjectName(t.projectId, props.projects)}
-                    | {getTypeName(t.typeId, props.types)}
+                    <DropDown 
+                        selected={t.projectId} 
+                        handleChange={this.handleProjectChange} 
+                        options={props.projects}
+                    />
+                    <DropDown 
+                        selected={t.typeId} 
+                        handleChange={this.handleTypeChange} 
+                        options={props.types} 
+                        displayIcon='tag'
+                    />
                 </div>
                 <div className="ttr-last">
                     {t.displayStartTime} - {t.displayEndTime} | {t.displayDuration}

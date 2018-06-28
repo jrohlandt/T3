@@ -55,13 +55,18 @@ class DropDown extends React.Component {
         }
 
         return (
-            <div style={{cursor: 'pointer'}} >
+            <div style={{
+                cursor: 'pointer',
+                width: '50%',
+                background: 'green',
+                border: 'red',
+                }} >
                 <p onClick={this.toggleDropdown} >
                     <span>{ this.state.expand ? iconExpanded : icon }</span>
                     { selectedName ? (<b>{selectedName}</b>) : '' }
                 </p>
                 { this.state.expand 
-                    ? <ul>{items}</ul> 
+                    ? <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>{items}</ul> 
                     : '' 
                 }
             </div>

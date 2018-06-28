@@ -54,8 +54,8 @@ class Timer extends React.Component {
         this.updateTask             = this.updateTask.bind(this);
         this.getTasks               = this.getTasks.bind(this);
         this.getActiveTask          = this.getActiveTask.bind(this);
-        this.handleProjectChange    = this.handleProjectChange.bind(this);
-        this.handleTypeChange       = this.handleTypeChange.bind(this);
+        // this.handleProjectChange    = this.handleProjectChange.bind(this);
+        // this.handleTypeChange       = this.handleTypeChange.bind(this);
         // this.stopActiveTask         = this.stopActiveTask.bind(this);
     }
 
@@ -153,19 +153,6 @@ class Timer extends React.Component {
             .catch(err => console.log('Task could not be created. Error: ', err));
     }
 
-    // stopActiveTask(task, clearActiveTask=true ) {
-    //     console.log('stopActiveTask', 'emptyTask: ', emptyTask, clearActiveTask, task);
-    //     if (task.id == 0)
-    //         return;
-
-    //     this.ajax.put( task )
-    //         .then(res => {
-    //             this.setState( { activeTask: clearActiveTask ? Object.assign({}, emptyTask) : Object.assign(task, res.task) } );
-    //             this.getTasks();
-    //         })
-    //         .catch(err => console.log('Task could not be updated. Error: ', err));
-    // }
-
     updateTask(task) {
         console.log('update tassssk', task);
         if (task.id == 0)
@@ -177,39 +164,6 @@ class Timer extends React.Component {
                 this.getActiveTask();
             })
             .catch(err => console.log('Task could not be updated. Error: ', err));
-    }
-
-    // handleOnBlur() {
-    //     this.updateTask(this.state.activeTask);
-    // }
-
-    // todo change to handleDescriptionChange
-    // handleChange(event) {
-    //     const activeTask = this.state.activeTask;
-    //     activeTask.description = event.target.value;
-
-    //     this.setState({activeTask});
-    // }
-
-    // handleOnFocus() {
-    //     console.log('focus create task');
-    //     this.createTask(this.state.activeTask);
-    // }
-
-    handleProjectChange(projectId) {
-        let activeTask = this.state.activeTask;
-        activeTask.projectId = projectId;
-
-        this.setState({activeTask});
-        this.updateTask(activeTask);
-    }
-
-    handleTypeChange(typeId) {
-        let activeTask = this.state.activeTask;
-        activeTask.typeId = typeId;
-
-        this.setState({activeTask});
-        this.updateTask(activeTask);
     }
 
     componentDidMount() {
