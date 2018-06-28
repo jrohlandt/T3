@@ -130,14 +130,17 @@ class Timer extends React.Component {
                 let activeTask = {};
                 if (res.task == undefined) { 
                     activeTask = Object.assign({}, emptyTask);
+                    activeTask.displayStartTime = '';
                 } else {
                     activeTask = Object.assign({}, res.task);
+                    activeTask.displayStartTime = '';
+                    console.log('new startime: ', new Date(activeTask.startTime).getTime());
+                    if (new Date(activeTask.startTime).getTime() > 0 ) {
+                        activeTask.displayStartTime = this.date.toMysqlDateTime(new Date(activeTask.startTime), true);
+                    }
                 }
-                    // return;
 
-                // let activeTask = Object.assign(this.state.activeTask, res.task);
                 activeTask.activeButton = res.started ? 'stop' : 'start';
-
                 this.setState({ activeTask });
             })
             .catch(err => console.log('Could not fetch active task. Error: ', err));
@@ -202,39 +205,7 @@ class Timer extends React.Component {
 
         return (
             <div>
-                {/* <div className="timer-active-task-row">
-                    <div className="ttr-main">
-                        <div>
-                            <input 
-                                type="text" 
-                                onFocus={this.handleOnFocus} 
-                                onBlur={this.handleOnBlur} 
-                                onChange={this.handleChange} 
-                                value={activeTask.description}
-                            />
-                        </div>
-                    </div>
-                    <div className="ttr-secondary">
-                        <DropDown 
-                            selected={activeTask.projectId} 
-                            handleChange={this.handleProjectChange} 
-                            options={this.state.projects}
-                        />
-                        <DropDown 
-                            selected={activeTask.typeId} 
-                            handleChange={this.handleTypeChange} 
-                            options={this.state.types} 
-                            displayIcon='tag'
-                        />
-                    </div>
-
-                    <div>
-                        { 
-                            activeTask.startTime !== 0
-                                ? <DisplayTimer startTime={activeTask.startTime} />
-                                : ''
-                        }
-                    </div> */}
+                <div>
                     <TaskRow 
                         task={activeTask} 
                         projects={this.state.projects} 
@@ -244,11 +215,10 @@ class Timer extends React.Component {
                         updateTask={this.updateTask}
                         isActiveTask='true'
                     />
-                    {/* <div className="ttr-last" style={{marginBottom: '20px'}}>
-                        <button onClick={this.toggleTimer}>{activeTask.activeButton}</button>
-                    </div> */}
-                {/* </div> */}
-                {tasksRows}
+                </div>
+                <div>
+                    {tasksRows}
+                </div>
             </div>
         );
     }

@@ -47,6 +47,7 @@ class TaskRow extends React.Component {
         this.toggleTimer = this.toggleTimer.bind(this);
         this.handleProjectChange = this.handleProjectChange.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.handleDescriptionOnFocus = this.handleDescriptionOnFocus.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleDescriptionOnBlur = this.handleDescriptionOnBlur.bind(this);
     }
@@ -62,7 +63,12 @@ class TaskRow extends React.Component {
         this.updateTask();
     }
 
+    handleDescriptionOnFocus(event) {
+        this.createTask();
+    }
+
     createTask(task={}) {
+        console.log('create tttask', task);
         if (Object.keys(task).length > 0) {
             this.props.createTask(task);
         } else {
@@ -82,7 +88,7 @@ class TaskRow extends React.Component {
             t = Object.assign({}, this.state.task);
         }
         this.props.updateTask(t);
-        this.setState({task: t});
+        // this.setState({task: t});
 
     }
 
@@ -136,7 +142,6 @@ class TaskRow extends React.Component {
 
     render() {
         const props = this.props;
-        const t = this.state.task;
         return (
             <div className="timer-task-row">
                 <div className="ttr-main">
@@ -145,16 +150,16 @@ class TaskRow extends React.Component {
                             this.state.isActiveTask
                                 ?  <input 
                                         type="text" 
-                                        onFocus={ this.createTask }
+                                        onFocus={ this.handleDescriptionOnFocus }
                                         onBlur={ this.handleDescriptionOnBlur } 
                                         onChange={ this.handleDescriptionChange } 
-                                        value={t.description}
+                                        value={this.state.task.description}
                                     />
                                 : <input 
                                         type="text" 
                                         onBlur={ this.handleDescriptionOnBlur } 
                                         onChange={ this.handleDescriptionChange } 
-                                        value={t.description}
+                                        value={this.state.task.description}
                                     />
                         }
                         
@@ -162,26 +167,27 @@ class TaskRow extends React.Component {
                 </div>
                 <div className="ttr-secondary">
                     <DropDown 
-                        selected={t.projectId} 
+                        selected={props.projectId} 
                         handleChange={this.handleProjectChange} 
                         options={props.projects}
                     />
                     <DropDown 
-                        selected={t.typeId} 
+                        selected={props.typeId} 
                         handleChange={this.handleTypeChange} 
                         options={props.types} 
                         displayIcon='tag'
                     />
                 </div>
                 <div className="ttr-last">
-                    {t.displayStartTime} - {t.displayEndTime} | {t.displayDuration}
+                    {props.task.displayStartTime} - {props.task.displayEndTime} | {props.task.displayDuration}
+                    { props.isActiveTask 
+                        ? <div className="ttr-last" style={{marginBottom: '20px'}}>
+                                <button onClick={this.toggleTimer}>{props.task.activeButton}</button>
+                            </div>
+                        : ''
+                    }
                 </div>
-                { this.state.isActiveTask 
-                    ? <div className="ttr-last" style={{marginBottom: '20px'}}>
-                            <button onClick={this.toggleTimer}>{t.activeButton}</button>
-                        </div>
-                    : ''
-                }
+                
                 
             </div>
         );
