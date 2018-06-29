@@ -1,6 +1,10 @@
 'use strict';
 import React from 'react';
-import { FaFolderO, FaFolderOpenO, FaTag, FaTags } from 'react-icons/lib/fa';
+// import { FaFolderO, FaFolderOpenO, FaTag, FaTags } from 'react-icons/lib/fa';
+import FaFolderO from 'react-icons/lib/fa/folder-o';
+import FaFolderOpenO from 'react-icons/lib/fa/folder-open-o';
+import FaTag from 'react-icons/lib/fa/tag';
+import FaTags from 'react-icons/lib/fa/tags';
 
 class DropDown extends React.Component {
 
