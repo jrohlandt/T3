@@ -47,7 +47,7 @@ class TaskRow extends React.Component {
         this.toggleTimer = this.toggleTimer.bind(this);
         this.handleProjectChange = this.handleProjectChange.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
-        this.handleDescriptionOnFocus = this.handleDescriptionOnFocus.bind(this);
+        // this.handleDescriptionOnFocus = this.handleDescriptionOnFocus.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleDescriptionOnBlur = this.handleDescriptionOnBlur.bind(this);
     }
@@ -63,15 +63,20 @@ class TaskRow extends React.Component {
         this.updateTask();
     }
 
-    handleDescriptionOnFocus(event) {
-        this.createTask();
-    }
+    // handleDescriptionOnFocus(event) {
+    //     this.createTask();
+    // }
 
     createTask(task={}) {
+        
         console.log('create tttask', task);
         if (Object.keys(task).length > 0) {
+            console.log('c1');
+            
             this.props.createTask(task);
         } else {
+            console.log('c2');
+
             this.props.createTask(this.state.task);
         }
     }
@@ -87,7 +92,15 @@ class TaskRow extends React.Component {
         console.log('inside 2');
             t = Object.assign({}, this.state.task);
         }
-        this.props.updateTask(t);
+        if (t.id === 0) {
+        console.log('inside 3 create');
+
+            this.props.createTask(task);
+        } else {
+        console.log('inside 4 update');
+
+            this.props.updateTask(t);
+        }
         // this.setState({task: t});
 
     }
@@ -101,23 +114,26 @@ class TaskRow extends React.Component {
         activeTask.tzName       = regionValues.timeZone;
         activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
 
+        let status = '';
         if (activeTask.startTime === 0) {
-
+            status = 'start';
             activeTask.startTime = this.date.toMysqlDateTime(date);
             activeTask.activeButton = 'stop';
 
-            if (activeTask.id > 0) {
-                this.updateTask(activeTask);
-                return;
-            }
+            // if (activeTask.id > 0) {
+            //     this.updateTask(activeTask);
+            //     return;
+            // }
 
-            this.createTask(activeTask);
-        } 
+            // this.createTask(activeTask);
+        } else {
+            status = 'stop';
+            activeTask.endTime = this.date.toMysqlDateTime(date);
+        }
 
-        activeTask.endTime = this.date.toMysqlDateTime(date);
 
         // Stop timer and refresh tasks list.
-        console.log('stop task: ', activeTask);
+        console.log('toggle timer: ',status, activeTask);
         this.updateTask(activeTask);
     }
 
@@ -134,6 +150,12 @@ class TaskRow extends React.Component {
         this.updateTask(task);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.task !== this.state.task) {
+            this.setState({task: nextProps.task});
+        }
+    }
+
     componentDidMount() {
         const p = this.props;
         const isActiveTask = p.isActiveTask != undefined ? p.isActiveTask : false;
@@ -142,6 +164,7 @@ class TaskRow extends React.Component {
 
     render() {
         const props = this.props;
+        const task = this.state.task;
         return (
             <div className="timer-task-row">
                 <div className="ttr-main">
@@ -150,16 +173,15 @@ class TaskRow extends React.Component {
                             this.state.isActiveTask
                                 ?  <input 
                                         type="text" 
-                                        onFocus={ this.handleDescriptionOnFocus }
-                                        onBlur={ this.handleDescriptionOnBlur } 
                                         onChange={ this.handleDescriptionChange } 
-                                        value={this.state.task.description}
+                                        onBlur={ this.handleDescriptionOnBlur }
+                                        value={ task.description }
                                     />
                                 : <input 
                                         type="text" 
-                                        onBlur={ this.handleDescriptionOnBlur } 
                                         onChange={ this.handleDescriptionChange } 
-                                        value={this.state.task.description}
+                                        onBlur={ this.handleDescriptionOnBlur }
+                                        value={ task.description }
                                     />
                         }
                         
@@ -167,22 +189,22 @@ class TaskRow extends React.Component {
                 </div>
                 <div className="ttr-secondary">
                     <DropDown 
-                        selected={props.projectId} 
-                        handleChange={this.handleProjectChange} 
-                        options={props.projects}
+                        selected={ task.projectId } 
+                        handleChange={ this.handleProjectChange } 
+                        options={ props.projects }
                     />
                     <DropDown 
-                        selected={props.typeId} 
-                        handleChange={this.handleTypeChange} 
-                        options={props.types} 
+                        selected={ task.typeId } 
+                        handleChange={ this.handleTypeChange } 
+                        options={ props.types } 
                         displayIcon='tag'
                     />
                 </div>
                 <div className="ttr-last">
-                    {props.task.displayStartTime} - {props.task.displayEndTime} | {props.task.displayDuration}
+                    {task.displayStartTime} - {task.displayEndTime} | {task.displayDuration}
                     { props.isActiveTask 
                         ? <div className="ttr-last" style={{marginBottom: '20px'}}>
-                                <button onClick={this.toggleTimer}>{props.task.activeButton}</button>
+                                <button onClick={this.toggleTimer}>{task.activeButton}</button>
                             </div>
                         : ''
                     }
