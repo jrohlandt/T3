@@ -2,7 +2,7 @@
 import React from 'react';
 import DropDown from './DropDown.js';
 import DisplayTimer from './Timer';
-import DateHelper from '../../core/Helpers/Date.js';
+import DateHelper from '../../core/Helpers/DateHelper';
 
 const getProjectName = (projectId, projects) => {
     

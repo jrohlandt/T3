@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import DateHelper from '../../core/Helpers/Date.js';
+import DateHelper from '../../core/Helpers/DateHelper';
 
 class Timer extends React.Component {
 

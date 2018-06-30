@@ -3,8 +3,9 @@
 import React from 'react';
 import TaskRow from './TaskRow.js';
 
-import Ajax from '../../core/Helpers/Ajax.js';
-import DateHelper from '../../core/Helpers/Date.js';
+import Ajax from '../../core/Helpers/AjaxHelper';
+import DateHelper from '../../core/Helpers/DateHelper';
+import TasksHelper from '../../core/Helpers/TasksHelper';
 
 
 var emptyTask = {
@@ -56,23 +57,9 @@ class Timer extends React.Component {
     getTasks() {
         this.ajax.get()
             .then(res => {
-
-                // Create a object that stores each task by it's date.
-                let tasksByDate = {};
-                const tasks = res.tasks;
-                for ( let i=0; i < tasks.length; i++ ) {
-
-                    let task    = tasks[i];
-                    let dateKey = this.date.toMysqlDate(new Date(task.startTime));
-                    
-                    if ( ! tasksByDate.hasOwnProperty(dateKey) ) {
-                        tasksByDate[dateKey] = [];
-                    }
-
-                    tasksByDate[dateKey].push(task);
-                }
-
-                this.setState({tasksByDate});
+                this.setState({
+                    tasksByDate: TasksHelper.sortTasksByDate(res.tasks)
+                });
             })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
     }
