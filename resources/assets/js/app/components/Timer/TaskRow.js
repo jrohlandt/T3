@@ -188,13 +188,17 @@ class TaskRow extends React.Component {
                     />
                 </div>
                 <div className="ttr-last">
-                    {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | {this.displayDuration(task)}
+                    {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | 
+                    <div>
+                        { props.isActiveTask && TasksHelper.isStarted(task)
+                            ? <DisplayTimer startTime={task.startTime} />
+                            : this.displayDuration(task) 
+                        }
+                    </div> 
                     { props.isActiveTask 
-                        ? <div className="ttr-last" style={{marginBottom: '20px'}}>
-                                <button onClick={this.toggleTimer}>
-                                    {TasksHelper.isStarted(task) ? 'stop' : 'start'}
-                                </button>
-                            </div>
+                        ? <button onClick={this.toggleTimer}>
+                                {TasksHelper.isStarted(task) ? 'stop' : 'start'}
+                            </button>
                         : ''
                     }
                 </div>
