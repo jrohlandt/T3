@@ -1,5 +1,9 @@
 class DateHelper {
 
+    getTimeOnly(mysqlDateTime) {        
+        return this.toMysqlDateTime(new Date(mysqlDateTime), true);
+    }
+
     toMysqlDateTime(dateObj, hoursAndMinutesOnly=false) {
         const hours = (dateObj.getHours() < 10) ? "0" + dateObj.getHours().toString() : dateObj.getHours();
         const minutes = (dateObj.getMinutes() < 10) ? "0" + dateObj.getMinutes().toString() : dateObj.getMinutes();

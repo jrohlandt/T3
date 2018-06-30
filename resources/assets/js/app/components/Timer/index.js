@@ -27,6 +27,7 @@ class Timer extends React.Component {
 
         this.state = {
             tasks: {},
+            tasksByDate: {},
             activeTask: Object.assign({}, emptyTask),
             projects: [
                 { id: 0, name: 'no project' },
@@ -46,65 +47,19 @@ class Timer extends React.Component {
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
-        // this.handleChange           = this.handleChange.bind(this);
-        // this.handleOnFocus          = this.handleOnFocus.bind(this);
-        // this.handleOnBlur           = this.handleOnBlur.bind(this); 
-        // this.toggleTimer            = this.toggleTimer.bind(this);
         this.createTask             = this.createTask.bind(this);
         this.updateTask             = this.updateTask.bind(this);
         this.getTasks               = this.getTasks.bind(this);
         this.getActiveTask          = this.getActiveTask.bind(this);
-        // this.handleProjectChange    = this.handleProjectChange.bind(this);
-        // this.handleTypeChange       = this.handleTypeChange.bind(this);
-        // this.stopActiveTask         = this.stopActiveTask.bind(this);
     }
-
-    // toggleTimer() {
-
-    //     let activeTask          = this.state.activeTask;
-    //     const date              = new Date();
-    //     const region            = new Intl.DateTimeFormat();
-    //     const regionValues      = region.resolvedOptions();
-    //     activeTask.tzName       = regionValues.timeZone;
-    //     activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
-
-    //     if (activeTask.startTime === 0) {
-
-    //         activeTask.startTime = this.date.toMysqlDateTime(date);
-    //         activeTask.activeButton = 'stop';
-
-    //         if (activeTask.id > 0) {
-    //             this.updateTask(activeTask);
-    //             return;
-    //         }
-
-    //         this.createTask(activeTask);
-                
-    //     } 
-
-    //     activeTask.endTime = this.date.toMysqlDateTime(date);
-
-    //     // Stop timer and refresh tasks list.
-    //     this.stopActiveTask(activeTask);
-    // }
 
     getTasks() {
         this.ajax.get()
             .then(res => {
 
-                // Format the display times and duration for each task.
-                const tasks = res.tasks.map((t, i) => {
-                    const durationInSeconds = this.date.mysqlToSeconds(t.endTime) - this.date.mysqlToSeconds(t.startTime);
-                    t.displayStartTime      = this.date.toMysqlDateTime(new Date(t.startTime), true);
-                    t.displayEndTime        = this.date.toMysqlDateTime(new Date(t.endTime), true);
-                    t.displayDuration       =  this.date.durationForDisplay(durationInSeconds);
-
-                    return t;
-                });
-
-                // Now create a object that stores each task by it's date.
+                // Create a object that stores each task by it's date.
                 let tasksByDate = {};
-
+                const tasks = res.tasks;
                 for ( let i=0; i < tasks.length; i++ ) {
 
                     let task    = tasks[i];
@@ -117,7 +72,7 @@ class Timer extends React.Component {
                     tasksByDate[dateKey].push(task);
                 }
 
-                this.setState({tasks: tasksByDate});
+                this.setState({tasksByDate});
             })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
     }
@@ -130,16 +85,11 @@ class Timer extends React.Component {
                 let activeTask = {};
                 if (res.task == undefined) { 
                     activeTask = Object.assign({}, emptyTask);
-                    activeTask.displayStartTime = '';
                 } else {
                     activeTask = Object.assign({}, res.task);
-                    activeTask.displayStartTime = '';
-                    console.log('new startime: ', new Date(activeTask.startTime).getTime());
-                    if (new Date(activeTask.startTime).getTime() > 0 ) {
-                        activeTask.displayStartTime = this.date.toMysqlDateTime(new Date(activeTask.startTime), true);
-                    }
                 }
 
+                // todo create a isStarted method in TaskRow to handle button text.
                 activeTask.activeButton = res.started ? 'stop' : 'start';
                 this.setState({ activeTask });
             })
@@ -157,7 +107,6 @@ class Timer extends React.Component {
     }
 
     updateTask(task) {
-        console.log('update tassssk', task);
         if (task.id == 0)
             return;
 
@@ -178,7 +127,7 @@ class Timer extends React.Component {
 
         let tasksRows = [];
         let dateKey;
-        const tasks = this.state.tasks;
+        const tasks = this.state.tasksByDate;
 
         for (dateKey in tasks) {
             if ( ! tasks.hasOwnProperty(dateKey) ) {

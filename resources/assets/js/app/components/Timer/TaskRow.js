@@ -68,86 +68,74 @@ class TaskRow extends React.Component {
     // }
 
     createTask(task={}) {
-        
-        console.log('create tttask', task);
         if (Object.keys(task).length > 0) {
-            console.log('c1');
-            
             this.props.createTask(task);
-        } else {
-            console.log('c2');
-
-            this.props.createTask(this.state.task);
+            return;
         }
+
+        this.props.createTask(this.state.task);
     }
 
     updateTask(task={}) {
-
         let t;
-        console.log('inside task;', Object.keys(task).length, task);
         if (Object.keys(task).length > 0) {
-        console.log('inside 1');
             t = Object.assign({}, task);
         } else {
-        console.log('inside 2');
             t = Object.assign({}, this.state.task);
         }
+
         if (t.id === 0) {
-        console.log('inside 3 create');
-
-            this.props.createTask(task);
+            // Call internal createTask method.
+            this.createTask(task);
         } else {
-        console.log('inside 4 update');
-
             this.props.updateTask(t);
         }
         // this.setState({task: t});
-
     }
 
     toggleTimer() {
 
-        let activeTask          = Object.assign({}, this.state.task);
-        const date              = new Date();
-        const region            = new Intl.DateTimeFormat();
-        const regionValues      = region.resolvedOptions();
-        activeTask.tzName       = regionValues.timeZone;
-        activeTask.tzOffset     = (date.getTimezoneOffset() / 60) * -1;
+        let task            = Object.assign({}, this.state.task);
+        const date          = new Date();
+        const region        = new Intl.DateTimeFormat();
+        const regionValues  = region.resolvedOptions();
+        task.tzName         = regionValues.timeZone;
+        task.tzOffset       = (date.getTimezoneOffset() / 60) * -1;
 
         let status = '';
-        if (activeTask.startTime === 0) {
+        if (task.startTime === 0) {
             status = 'start';
-            activeTask.startTime = this.date.toMysqlDateTime(date);
-            activeTask.activeButton = 'stop';
-
-            // if (activeTask.id > 0) {
-            //     this.updateTask(activeTask);
-            //     return;
-            // }
-
-            // this.createTask(activeTask);
+            task.startTime = this.date.toMysqlDateTime(date);
+            task.activeButton = 'stop';
         } else {
             status = 'stop';
-            activeTask.endTime = this.date.toMysqlDateTime(date);
+            task.endTime = this.date.toMysqlDateTime(date);
         }
 
-
-        // Stop timer and refresh tasks list.
-        console.log('toggle timer: ',status, activeTask);
-        this.updateTask(activeTask);
+        this.updateTask(task);
     }
 
     handleProjectChange(projectId) {
-        let task = Object.assign({}, this.state.task);
-        task.projectId = projectId;
-        this.updateTask(task);
-        // this.updateTask(Object.assign(this.state.task, {projectId}));
+        this.updateTask(Object.assign(this.state.task, {projectId}));
     }
 
     handleTypeChange(typeId) {
-        let task = Object.assign({}, this.state.task);
-        task.typeId = typeId;
-        this.updateTask(task);
+        this.updateTask(Object.assign(this.state.task, {typeId}));
+    }
+
+    displayDuration(task) {
+        let date = new DateHelper;
+        const durationInSeconds = date.mysqlToSeconds(task.endTime) - date.mysqlToSeconds(task.startTime);
+        return date.durationForDisplay(durationInSeconds);
+    }
+
+    // @param string mysqlDateTime
+    displayTime(mysqlDateTime) {
+        let date = new DateHelper;
+        if (mysqlDateTime && mysqlDateTime.indexOf('1970') === -1) {
+            return date.getTimeOnly(mysqlDateTime);
+        }
+        return '';
     }
 
     componentWillReceiveProps(nextProps) {
@@ -201,7 +189,7 @@ class TaskRow extends React.Component {
                     />
                 </div>
                 <div className="ttr-last">
-                    {task.displayStartTime} - {task.displayEndTime} | {task.displayDuration}
+                    {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | {this.displayDuration(task)}
                     { props.isActiveTask 
                         ? <div className="ttr-last" style={{marginBottom: '20px'}}>
                                 <button onClick={this.toggleTimer}>{task.activeButton}</button>

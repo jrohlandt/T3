@@ -104,6 +104,8 @@ app.post('/api/tasks', async (req, res) => {
         const task = await Tasks.create({
             description: body.description,
             projectId: body.projectId,
+            typeId: body.typeId,
+            startTime: body.startTime,
         });
 
         res.status(200).json({

@@ -62,7 +62,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
