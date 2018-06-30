@@ -1,6 +1,6 @@
 import DateHelper from './DateHelper';
 
-class TasksHelper {
+class TaskHelper {
 
     constructor() {
         this.date = new DateHelper;
@@ -23,6 +23,10 @@ class TasksHelper {
         return tasksByDate;
     }
 
+    hasNotBeenCreated(task) {
+        return task.id === 0;
+    }
+
     isStarted(task) {
         return new Date(task.startTime).getTime() > 0;
     }
@@ -33,4 +37,4 @@ class TasksHelper {
     }
 }
 
-export default new TasksHelper;
+export default new TaskHelper;

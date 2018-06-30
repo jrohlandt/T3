@@ -3,7 +3,7 @@ import React from 'react';
 import DropDown from './DropDown.js';
 import DisplayTimer from './Timer';
 import DateHelper from '../../core/Helpers/DateHelper';
-import TasksHelper from '../../core/Helpers/TasksHelper';
+import TaskHelper from '../../core/Helpers/TaskHelper';
 
 const getProjectName = (projectId, projects) => {
     
@@ -42,16 +42,15 @@ class TaskRow extends React.Component {
             },
         }
 
-        this.date = new DateHelper;        
+        this.date = new DateHelper;  
 
-        this.createTask = this.createTask.bind(this);
-        this.updateTask = this.updateTask.bind(this);
-        this.toggleTimer = this.toggleTimer.bind(this);
-        this.handleProjectChange = this.handleProjectChange.bind(this);
-        this.handleTypeChange = this.handleTypeChange.bind(this);
-        // this.handleDescriptionOnFocus = this.handleDescriptionOnFocus.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleDescriptionOnBlur = this.handleDescriptionOnBlur.bind(this);
+        this.createTask                 = this.createTask.bind(this);
+        this.updateTask                 = this.updateTask.bind(this);
+        this.toggleTimer                = this.toggleTimer.bind(this);
+        this.handleProjectChange        = this.handleProjectChange.bind(this);
+        this.handleTypeChange           = this.handleTypeChange.bind(this);
+        this.handleDescriptionChange    = this.handleDescriptionChange.bind(this);
+        this.handleDescriptionOnBlur    = this.handleDescriptionOnBlur.bind(this);
     }
 
     handleDescriptionChange(event) {
@@ -64,10 +63,6 @@ class TaskRow extends React.Component {
     handleDescriptionOnBlur(event) {
         this.updateTask();
     }
-
-    // handleDescriptionOnFocus(event) {
-    //     this.createTask();
-    // }
 
     createTask(task={}) {
         if (Object.keys(task).length > 0) {
@@ -86,13 +81,12 @@ class TaskRow extends React.Component {
             t = Object.assign({}, this.state.task);
         }
 
-        if (t.id === 0) {
-            // Call internal createTask method.
+        if (TaskHelper.hasNotBeenCreated(t)) {
             this.createTask(task);
-        } else {
-            this.props.updateTask(t, this.state.isActiveTask);
+            return;
         }
-        // this.setState({task: t});
+
+        this.props.updateTask(t, this.state.isActiveTask);
     }
 
     toggleTimer() {
@@ -104,7 +98,7 @@ class TaskRow extends React.Component {
         task.tzName         = regionValues.timeZone;
         task.tzOffset       = (date.getTimezoneOffset() / 60) * -1;
 
-        if ( ! TasksHelper.isStarted(task) ) {
+        if ( ! TaskHelper.isStarted(task) ) {
             task.startTime = this.date.toMysqlDateTime(date);
             this.updateTask(task);
             return;
@@ -190,14 +184,14 @@ class TaskRow extends React.Component {
                 <div className="ttr-last">
                     {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | 
                     <div>
-                        { props.isActiveTask && TasksHelper.isStarted(task)
+                        { props.isActiveTask && TaskHelper.isStarted(task)
                             ? <DisplayTimer startTime={task.startTime} />
                             : this.displayDuration(task) 
                         }
                     </div> 
                     { props.isActiveTask 
                         ? <button onClick={this.toggleTimer}>
-                                {TasksHelper.isStarted(task) ? 'stop' : 'start'}
+                                {TaskHelper.isStarted(task) ? 'stop' : 'start'}
                             </button>
                         : ''
                     }

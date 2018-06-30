@@ -5,7 +5,7 @@ import TaskRow from './TaskRow.js';
 
 import Ajax from '../../core/Helpers/AjaxHelper';
 import DateHelper from '../../core/Helpers/DateHelper';
-import TasksHelper from '../../core/Helpers/TasksHelper';
+import TaskHelper from '../../core/Helpers/TaskHelper';
 
 
 var emptyTask = {
@@ -59,7 +59,7 @@ class Timer extends React.Component {
             .then(res => {
                 this.setState({
                     tasks: res.tasks,
-                    tasksByDate: TasksHelper.sortTasksByDate(res.tasks)
+                    tasksByDate: TaskHelper.sortTasksByDate(res.tasks)
                 });
             })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
@@ -109,7 +109,7 @@ class Timer extends React.Component {
             
         } else {
             activeTask = task;
-            if (TasksHelper.isDone(task)) {
+            if (TaskHelper.isDone(task)) {
                 activeTask = Object.assign({}, emptyTask);
                 tasks.unshift(task);
             }
@@ -118,7 +118,7 @@ class Timer extends React.Component {
         this.setState({
             tasks, 
             activeTask,
-            tasksByDate: TasksHelper.sortTasksByDate(tasks),
+            tasksByDate: TaskHelper.sortTasksByDate(tasks),
         });
     }
 
