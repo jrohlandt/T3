@@ -3,6 +3,7 @@ import React from 'react';
 import DropDown from './DropDown.js';
 import DisplayTimer from './Timer';
 import DateHelper from '../../core/Helpers/DateHelper';
+import TasksHelper from '../../core/Helpers/TasksHelper';
 
 const getProjectName = (projectId, projects) => {
     
@@ -37,6 +38,7 @@ class TaskRow extends React.Component {
             isActiveTask: false,
             task: {
                 description: '',
+                startTime: 0,
             },
         }
 
@@ -102,16 +104,13 @@ class TaskRow extends React.Component {
         task.tzName         = regionValues.timeZone;
         task.tzOffset       = (date.getTimezoneOffset() / 60) * -1;
 
-        let status = '';
-        if (task.startTime === 0) {
-            status = 'start';
+        if ( ! TasksHelper.isStarted(task) ) {
             task.startTime = this.date.toMysqlDateTime(date);
-            task.activeButton = 'stop';
-        } else {
-            status = 'stop';
-            task.endTime = this.date.toMysqlDateTime(date);
+            this.updateTask(task);
+            return;
         }
 
+        task.endTime = this.date.toMysqlDateTime(date);
         this.updateTask(task);
     }
 
@@ -192,7 +191,9 @@ class TaskRow extends React.Component {
                     {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | {this.displayDuration(task)}
                     { props.isActiveTask 
                         ? <div className="ttr-last" style={{marginBottom: '20px'}}>
-                                <button onClick={this.toggleTimer}>{task.activeButton}</button>
+                                <button onClick={this.toggleTimer}>
+                                    {TasksHelper.isStarted(task) ? 'stop' : 'start'}
+                                </button>
                             </div>
                         : ''
                     }

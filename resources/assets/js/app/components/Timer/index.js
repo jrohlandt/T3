@@ -70,16 +70,12 @@ class Timer extends React.Component {
         ajax.get()
             .then(res => {
 
-                let activeTask = {};
                 if (res.task == undefined) { 
-                    activeTask = Object.assign({}, emptyTask);
-                } else {
-                    activeTask = Object.assign({}, res.task);
+                    this.setState({ activeTask: Object.assign({}, emptyTask) });
+                    return;
                 }
 
-                // todo create a isStarted method in TaskRow to handle button text.
-                activeTask.activeButton = res.started ? 'stop' : 'start';
-                this.setState({ activeTask });
+                this.setState({ activeTask: Object.assign({}, res.task) });
             })
             .catch(err => console.log('Could not fetch active task. Error: ', err));
     }
@@ -99,18 +95,11 @@ class Timer extends React.Component {
             return;
             
         this.ajax.put( task )
-            .then(res => {
-                
-                // if (isActiveTask) {
-                    // this.getActiveTask();
-                // }
-            })
             .catch(err => console.log('Task could not be updated. Error: ', err));
 
         let tasks = this.state.tasks;
         let activeTask = this.state.activeTask;
         if ( ! isActiveTask ) {
-            // this.getTasks();
             tasks = this.state.tasks.map((t, i) => {
                 if (task.id !== t.id)
                     return t;
