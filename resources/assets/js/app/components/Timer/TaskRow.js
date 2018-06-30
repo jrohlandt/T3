@@ -88,7 +88,7 @@ class TaskRow extends React.Component {
             // Call internal createTask method.
             this.createTask(task);
         } else {
-            this.props.updateTask(t);
+            this.props.updateTask(t, this.state.isActiveTask);
         }
         // this.setState({task: t});
     }

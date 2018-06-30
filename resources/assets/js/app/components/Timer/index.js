@@ -58,6 +58,7 @@ class Timer extends React.Component {
         this.ajax.get()
             .then(res => {
                 this.setState({
+                    tasks: res.tasks,
                     tasksByDate: TasksHelper.sortTasksByDate(res.tasks)
                 });
             })
@@ -93,19 +94,47 @@ class Timer extends React.Component {
             .catch(err => console.log('Task could not be created. Error: ', err));
     }
 
-    updateTask(task) {
+    updateTask(task, isActiveTask=false) {
         if (task.id == 0)
             return;
-
+            
         this.ajax.put( task )
             .then(res => {
-                this.getTasks();
-                this.getActiveTask();
+                
+                // if (isActiveTask) {
+                    // this.getActiveTask();
+                // }
             })
             .catch(err => console.log('Task could not be updated. Error: ', err));
+
+        let tasks = this.state.tasks;
+        let activeTask = this.state.activeTask;
+        if ( ! isActiveTask ) {
+            // this.getTasks();
+            tasks = this.state.tasks.map((t, i) => {
+                if (task.id !== t.id)
+                    return t;
+
+                return task;
+            });
+            
+        } else {
+            activeTask = task;
+            if (TasksHelper.isDone(task)) {
+                activeTask = Object.assign({}, emptyTask);
+                tasks.unshift(task);
+            }
+        }
+
+        this.setState({
+            tasks, 
+            activeTask,
+            tasksByDate: TasksHelper.sortTasksByDate(tasks),
+        });
     }
 
     componentDidMount() {
+        console.log('didmount');
         this.getTasks();
         this.getActiveTask();
     }

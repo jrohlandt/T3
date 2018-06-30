@@ -22,6 +22,11 @@ class TasksHelper {
 
         return tasksByDate;
     }
+
+    // Check if a task is done (has a valid end date).
+    isDone(task) {
+        return new Date(task.startTime).getTime() != 0 && new Date(task.endTime).getTime() != 0;
+    }
 }
 
 export default new TasksHelper;
