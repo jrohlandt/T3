@@ -16,10 +16,16 @@ class DropDown extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.handleOnBlur = this.handleOnBlur.bind(this);
     }
 
     toggleDropdown() {
         this.setState({ expand: !this.state.expand });
+    }
+
+    handleOnBlur() {
+        console.log('on blur');
+        setTimeout(() => this.toggleDropdown(), 0);
     }
 
     handleChange(itemId) {
@@ -65,13 +71,35 @@ class DropDown extends React.Component {
                 background: 'green',
                 border: 'red',
                 }} >
-                <p onClick={this.toggleDropdown} >
-                    <span>{ this.state.expand ? iconExpanded : icon }</span>
-                    { selectedName ? (<b>{selectedName}</b>) : '' }
-                </p>
                 { this.state.expand 
-                    ? <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>{items}</ul> 
-                    : '' 
+                    ? (
+                        <div 
+                            tabIndex={0}
+                            onClick={this.toggleDropdown} 
+                            onBlur={this.handleOnBlur}  
+                            style={{border: 'red thick solid'}}
+                        >
+                            <p>
+                                <span>{ iconExpanded }</span>
+                                { selectedName ? (<b>{selectedName}</b>) : '' }
+                            </p>
+                            <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>
+                                {items}
+                            </ul> 
+                        </div>
+                        )
+                    : <div 
+                        tabIndex={0}
+                        onClick={this.toggleDropdown} 
+                        onBlur={this.handleOnBlur}  
+                        style={{border: 'blue thick solid'}}
+                        >
+                            <p>
+                                <span>{ icon }</span>
+                                { selectedName ? (<b>{selectedName}</b>) : '' }
+                            </p>
+                        </div>
+                        
                 }
             </div>
         );
