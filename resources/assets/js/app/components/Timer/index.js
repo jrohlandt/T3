@@ -93,9 +93,6 @@ class Timer extends React.Component {
     updateTask(task, isActiveTask=false) {
         if (task.id == 0)
             return;
-            
-        this.ajax.put( task )
-            .catch(err => console.log('Task could not be updated. Error: ', err));
 
         let tasks = this.state.tasks;
         let activeTask = this.state.activeTask;
@@ -120,6 +117,10 @@ class Timer extends React.Component {
             activeTask,
             tasksByDate: TaskHelper.sortTasksByDate(tasks),
         });
+
+        // Update server.
+        this.ajax.put( task )
+            .catch(err => console.log('Task could not be updated. Error: ', err));
     }
 
     componentDidMount() {
@@ -139,7 +140,16 @@ class Timer extends React.Component {
                 continue;
             }
 
-            tasksRows.push(<h3 key={dateKey} >{dateKey}</h3>);
+            tasksRows.push(
+                <li 
+                    key={dateKey} 
+                    className='tasks-date-heading'
+                >
+                    <div >
+                        <h3>{dateKey}</h3>
+                    </div>
+                </li>
+            );
             tasksRows.push(tasks[dateKey].map((t, i) => 
                 <TaskRow 
                     task={t} 
@@ -159,19 +169,27 @@ class Timer extends React.Component {
 
         return (
             <div>
-                <div>
-                    <TaskRow 
-                        task={activeTask} 
-                        projects={this.state.projects} 
-                        types={this.state.types} 
-                        key={activeTask.id} 
-                        createTask={this.createTask} 
-                        updateTask={this.updateTask}
-                        isActiveTask='true'
-                    />
+                <div style={{marginBottom: '200px'}}>
+                    <ul className="tasks-rows" >
+                
+                            <TaskRow 
+                                task={activeTask} 
+                                projects={this.state.projects} 
+                                types={this.state.types} 
+                                key={activeTask.id} 
+                                createTask={this.createTask} 
+                                updateTask={this.updateTask}
+                                isActiveTask='true'
+                            />
+                      
+                    </ul>
                 </div>
                 <div>
-                    {tasksRows}
+                    <ul className="tasks-rows">
+                        
+                            {tasksRows}
+                        
+                    </ul>       
                 </div>
             </div>
         );

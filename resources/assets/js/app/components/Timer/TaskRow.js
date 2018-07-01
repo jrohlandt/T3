@@ -147,58 +147,51 @@ class TaskRow extends React.Component {
         const props = this.props;
         const task = this.state.task;
         return (
-            <div className="timer-task-row">
-                <div className="ttr-main">
-                    <div>
-                        {
-                            this.state.isActiveTask
-                                ?  <input 
-                                        type="text" 
-                                        onChange={ this.handleDescriptionChange } 
-                                        onBlur={ this.handleDescriptionOnBlur }
-                                        value={ task.description }
-                                    />
-                                : <input 
-                                        type="text" 
-                                        onChange={ this.handleDescriptionChange } 
-                                        onBlur={ this.handleDescriptionOnBlur }
-                                        value={ task.description }
-                                    />
-                        }
-                        
-                    </div>
+            <li className="timer-task-row">
+
+                <div className="ttr-left">
+                        <div className="ttr-description-wrapper" >
+                            <input 
+                                type="text" 
+                                onChange={ this.handleDescriptionChange } 
+                                onBlur={ this.handleDescriptionOnBlur }
+                                value={ task.description }
+                            />
+                        </div>
+
+                        <DropDown 
+                            selected={ task.projectId } 
+                            handleChange={ this.handleProjectChange } 
+                            options={ props.projects }
+                            role="project-select"
+                        />
                 </div>
-                <div className="ttr-secondary">
-                    <DropDown 
-                        selected={ task.projectId } 
-                        handleChange={ this.handleProjectChange } 
-                        options={ props.projects }
-                    />
+                
+                <div className="ttr-right">
                     <DropDown 
                         selected={ task.typeId } 
                         handleChange={ this.handleTypeChange } 
                         options={ props.types } 
-                        displayIcon='tag'
+                        role="type-select"
                     />
-                </div>
-                <div className="ttr-last">
-                    {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | 
-                    <div>
-                        { props.isActiveTask && TaskHelper.isStarted(task)
-                            ? <DisplayTimer startTime={task.startTime} />
-                            : this.displayDuration(task) 
+                    <div className="ttr-last">
+                        {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | 
+                        <div>
+                            { props.isActiveTask && TaskHelper.isStarted(task)
+                                ? <DisplayTimer startTime={task.startTime} />
+                                : this.displayDuration(task) 
+                            }
+                        </div> 
+                        { props.isActiveTask 
+                            ? <button onClick={this.toggleTimer}>
+                                    {TaskHelper.isStarted(task) ? 'stop' : 'start'}
+                                </button>
+                            : ''
                         }
-                    </div> 
-                    { props.isActiveTask 
-                        ? <button onClick={this.toggleTimer}>
-                                {TaskHelper.isStarted(task) ? 'stop' : 'start'}
-                            </button>
-                        : ''
-                    }
+                    </div>
                 </div>
                 
-                
-            </div>
+            </li>
         );
     }
     

@@ -25,7 +25,7 @@ class DropDown extends React.Component {
 
     handleOnBlur() {
         console.log('on blur');
-        setTimeout(() => this.toggleDropdown(), 0);
+        setTimeout(() => this.setState({expand: false}), 0);
     }
 
     handleChange(itemId) {
@@ -50,12 +50,12 @@ class DropDown extends React.Component {
         let icon;
         let iconExpanded;
 
-        switch (props.displayIcon) {
-            case 'folder':
+        switch (props.role) {
+            case 'project-select':
                 icon = <FaFolderO/>;
                 iconExpanded = <FaFolderOpenO/>;
                 break;
-            case 'tag':
+            case 'type-select':
                 icon = <FaTag/>;
                 iconExpanded = <FaTags/>;
                 break;
@@ -65,42 +65,22 @@ class DropDown extends React.Component {
         }
 
         return (
-            <div style={{
-                cursor: 'pointer',
-                width: '50%',
-                background: 'green',
-                border: 'red',
-                }} >
-                { this.state.expand 
-                    ? (
-                        <div 
-                            tabIndex={0}
-                            onClick={this.toggleDropdown} 
-                            onBlur={this.handleOnBlur}  
-                            style={{border: 'red thick solid'}}
-                        >
-                            <p>
-                                <span>{ iconExpanded }</span>
-                                { selectedName ? (<b>{selectedName}</b>) : '' }
-                            </p>
-                            <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>
+            <div className={ selectedName ? 'ttr-' + props.role : 'ttr-no-selected' } >
+                <div 
+                    tabIndex={0}
+                    onClick={this.toggleDropdown} 
+                    onBlur={this.handleOnBlur}  
+                >
+                    <div>
+                        { selectedName ? selectedName : icon }
+                    </div>
+                    { this.state.expand 
+                        ? <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>
                                 {items}
-                            </ul> 
-                        </div>
-                        )
-                    : <div 
-                        tabIndex={0}
-                        onClick={this.toggleDropdown} 
-                        onBlur={this.handleOnBlur}  
-                        style={{border: 'blue thick solid'}}
-                        >
-                            <p>
-                                <span>{ icon }</span>
-                                { selectedName ? (<b>{selectedName}</b>) : '' }
-                            </p>
-                        </div>
-                        
-                }
+                            </ul>
+                        : ''
+                    }
+                </div>
             </div>
         );
     }
