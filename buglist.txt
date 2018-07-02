@@ -1,9 +1,0 @@
-Bug list
----------
-
-1. If you click start and almost immediately thereafter you press stop. The activeTask will be updated but the activeTask state will not update and you will
-be unable to create or start a new task.
-
-2. if you select a project on a blank task and hit start and, then you reload the page, the start button will still say "start" instead of "stop".
-
-
