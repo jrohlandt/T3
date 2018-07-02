@@ -6,10 +6,9 @@
 .timer-active-task-row,
 .timer-task-row {
     clear: left;
-    height: 100px;
+    height: 50px;
+    padding: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 1);
-
-    border: thin solid rgb(255, 54, 47);
 }
 
 .timer-active-task-row {
@@ -17,14 +16,6 @@
     margin-bottom: 30px;
 }
 
-/* ttr timer-task-row */
-/* .ttr-main {
-    float: left;
-    width: 30%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    border: thin solid rgb(255, 47, 203);
-} */
 .ttr-left {
     float: left;
     width: 60%;
@@ -38,19 +29,11 @@
 .ttr-description-wrapper {
     float: left;
     width: 70%;
-    border: thin solid rgb(252, 255, 47);
 }
 
-.ttr.ttr-description-wrapper input[type="text"] {
-    min-width: 90%;
+.ttr-description-wrapper input[type="text"] {
+    width: 90%;
 }
-
-/* .ttr-secondary {
-    width: 30%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .2);
-    border: thin solid greenyellow;
-} */
 
 .ttr-project-select {
     display: inline-block;
@@ -59,14 +42,6 @@
     font-size: .8em;
     cursor: pointer;
     overflow: hidden;
-    border: thin solid green;
-    border-radius: 10px;
-}
-
-.ttr-no-selected {
-    display: inline-block;
-    padding: 5px 10px;
-    cursor: pointer;
 }
 
 .ttr-type-select {
@@ -75,10 +50,19 @@
     cursor: pointer;
 }
 
+.ttr-project-select:hover, .ttr-type-select:hover {
+    background: grey;
+    border-radius: 5px;
+}
+
+.ttr-no-selected {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
 .ttr-last {
     float: right;
     width: 30%;
     background-color: rgba(0, 0, 0, .5);
-
-    border: thin solid rgb(47, 213, 255);
 }

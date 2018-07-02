@@ -32,9 +32,9 @@ class Timer extends React.Component {
             activeTask: Object.assign({}, emptyTask),
             projects: [
                 { id: 0, name: 'no project' },
-                { id: 1, name: 'Webinarignition' },
-                { id: 2, name: 'Provely' },
-                { id: 3, name: 'Heatmaptracker' },
+                { id: 1, name: 'Webinarignition', color: '193, 92, 3' },
+                { id: 2, name: 'Provely', color: '111, 229, 84' },
+                { id: 3, name: 'Heatmaptracker', color: '239, 154, 43' },
                 { id: 4, name: 'PressPlay' },
                 { id: 5, name: 'Listeruption2' },
                 { id: 6, name: 'LeadGrab' },
@@ -172,7 +172,7 @@ class Timer extends React.Component {
 
         return (
             <div>
-                <div style={{marginBottom: '200px'}}>
+                <div>
                     <ul className="tasks-rows" >
                 
                             <TaskRow 

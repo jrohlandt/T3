@@ -38,9 +38,13 @@ class DropDown extends React.Component {
     render() {
         const props = this.props;
         let selectedName;
+        let itemColor;
         const items = props.options.map((o, i) => {
             if (props.selected != 0 && props.selected === o.id) {
                 selectedName = o.name;
+                if (o.color != undefined) {
+                    itemColor = o.color;
+                }
             }
             return (
                 <li key={o.id} onClick={ () => this.handleChange(o.id) }>{o.name}</li>
@@ -65,13 +69,15 @@ class DropDown extends React.Component {
         }
 
         return (
-            <div className={ selectedName ? 'ttr-' + props.role : 'ttr-no-selected' } >
-                <div 
+            <div 
+                className={ selectedName ? 'ttr-' + props.role : 'ttr-no-selected' } 
+            >
+                <div
                     tabIndex={0}
                     onClick={this.toggleDropdown} 
                     onBlur={this.handleOnBlur}  
                 >
-                    <div>
+                    <div style={ itemColor ? {'color': `rgb(${itemColor})`} : {} }>
                         { selectedName ? selectedName : icon }
                     </div>
                     { this.state.expand 
