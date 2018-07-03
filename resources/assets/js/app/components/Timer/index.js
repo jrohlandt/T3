@@ -27,8 +27,7 @@ class Timer extends React.Component {
         super(props);
 
         this.state = {
-            tasks: {},
-            tasksByDate: {},
+            tasks: [],
             activeTask: Object.assign({}, emptyTask),
             projects: [
                 { id: 0, name: 'no project' },
@@ -63,7 +62,6 @@ class Timer extends React.Component {
             .then(res => {
                 this.setState({
                     tasks: res.tasks,
-                    tasksByDate: TaskHelper.sortTasksByDate(res.tasks)
                 });
             })
             .catch(err => console.log('Could not fetch tasks. Error: ', err));
@@ -98,29 +96,32 @@ class Timer extends React.Component {
         if (task.id == 0)
             return;
 
-        let tasks = this.state.tasks;
-        let activeTask = this.state.activeTask;
-        if ( ! isActiveTask ) {
-            tasks = this.state.tasks.map((t, i) => {
-                if (task.id !== t.id)
-                    return t;
+        this.setState((currentState) => {
 
-                return task;
-            });
-            
-        } else {
-            activeTask = task;
-            if (TaskHelper.isDone(task)) {
-                activeTask = Object.assign({}, emptyTask);
-                tasks.unshift(task);
+            if ( isActiveTask ) {
+                if (TaskHelper.isDone(task)) {
+                    return {
+                        tasks: [task].concat(currentState.tasks),
+                        activeTask: Object.assign({}, emptyTask),
+                    };
+                }
+
+                return {
+                    activeTask: task,
+                };
             }
-        }
 
-        this.setState({
-            tasks, 
-            activeTask,
-            tasksByDate: TaskHelper.sortTasksByDate(tasks),
+            return {
+                tasks: currentState.tasks.map((t, i) => {
+                    if (task.id !== t.id)
+                        return t;
+
+                    return task;
+                }),
+            };
+
         });
+
 
         // Update server.
         this.ajax.put( task )
@@ -128,11 +129,12 @@ class Timer extends React.Component {
     }
 
     deleteTask(id) {
-        this.setState((prevState) => {
-            const tasks = prevState.tasks.filter((task) => task.id !== id);
+
+        // todo handle activeTask as well.
+        this.setState((currentState) => {
+            const tasks = currentState.tasks.filter((task) => task.id !== id);
             return {
                 tasks,
-                tasksByDate: TaskHelper.sortTasksByDate(tasks),
             }
         });
 
@@ -149,7 +151,7 @@ class Timer extends React.Component {
 
         let tasksRows = [];
         let dateKey;
-        const tasks = this.state.tasksByDate;
+        const tasks = TaskHelper.sortTasksByDate(this.state.tasks);
 
         for (dateKey in tasks) {
             if ( ! tasks.hasOwnProperty(dateKey) ) {
