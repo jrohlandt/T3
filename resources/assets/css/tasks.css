@@ -63,6 +63,26 @@
 
 .ttr-last {
     float: right;
-    width: 30%;
+    width: 60%;
     background-color: rgba(0, 0, 0, .5);
 }
+
+.ttr-times {
+    float: left;
+}
+
+.ttr-display-timer {
+
+}
+
+.ttr-actions {
+    float: right;
+}
+
+.ttr-delete {
+    color: rgb(241, 59, 59);
+    font-weight: bold;
+    padding: 5px;
+    cursor: pointer;
+}
+

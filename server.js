@@ -164,6 +164,27 @@ app.put('/api/tasks', async (req, res) => {
     // res.status(200).json({message: 'server create task'});
 });
 
+// DELETE
+app.delete('/api/tasks', async (req, res) => {
+    const Tasks = require('./app/models/').tasks;
+
+    try {
+        const task = await Tasks.findById(req.query.id);
+        console.log(task);
+        await task.destroy();
+
+        return res.status(200).json({
+            message: 'Task has been deleted.',
+        });
+    } catch (err) {
+        
+        return res.status(500).json({
+            message: 'Task could not be deleted.',
+            error: err,
+        });
+    }
+});
+
 app.listen(3000, () => console.log('Ready...'));
 
 

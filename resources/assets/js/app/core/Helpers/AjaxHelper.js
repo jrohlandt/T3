@@ -10,39 +10,41 @@ class Ajax {
 	}
 
 	/**
-	 * Send a POST request to the given URL.
+	 * Send a Get request.
 	 *
-	 * @param {string} url
+	 * @param {object} data
 	 */
 	get() {
 		return this.send( 'get' );
 	}
 
 	/**
-	 * Send a POST request to the given URL.
+	 * Send a POST request.
 	 *
-	 * @param {string} url
+	 * @param {object} data
 	 */
 	post( data ) {
 		return this.send( 'post', data );
 	}
 
 	/**
-	 * Send a PUT request to the given URL.
+	 * Send a PUT request.
 	 *
-	 * @param {string} url
+	 * @param {object} data
 	 */
 	put( data ) {
 		return this.send( 'put', data );
 	}
 
 	/**
-	 * Send a DELETE request to the given URL.
+	 * Send a DELETE request.
 	 *
-	 * @param {string} url
+	 * @param {object} data
 	 */
 	delete( data ) {
-		return this.send( 'delete', data );
+		return this.send( 'delete', {params: data} );
+		// Note: When sending 'params' instead of data, Axios will add ?id=177 to this.url. (If you data is {id: 177}).
+		// And then if using Express you can get the params in the query (req.query.id).
 	}
 
 	send( requestType, data={} ) {

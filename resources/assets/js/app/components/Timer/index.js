@@ -51,10 +51,11 @@ class Timer extends React.Component {
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
-        this.createTask             = this.createTask.bind(this);
-        this.updateTask             = this.updateTask.bind(this);
-        this.getTasks               = this.getTasks.bind(this);
-        this.getActiveTask          = this.getActiveTask.bind(this);
+        this.createTask = this.createTask.bind(this);
+        this.updateTask = this.updateTask.bind(this);
+        this.getTasks = this.getTasks.bind(this);
+        this.getActiveTask = this.getActiveTask.bind(this);
+        this.deleteTask = this.deleteTask.bind(this);
     }
 
     getTasks() {
@@ -126,8 +127,20 @@ class Timer extends React.Component {
             .catch(err => console.log('Task could not be updated. Error: ', err));
     }
 
+    deleteTask(id) {
+        this.setState((prevState) => {
+            const tasks = prevState.tasks.filter((task) => task.id !== id);
+            return {
+                tasks,
+                tasksByDate: TaskHelper.sortTasksByDate(tasks),
+            }
+        });
+
+        this.ajax.delete( {id: id} )
+            .catch(err => console.log('Task could not be deleted. Error: ', err));
+    }
+
     componentDidMount() {
-        console.log('didmount');
         this.getTasks();
         this.getActiveTask();
     }
@@ -160,6 +173,7 @@ class Timer extends React.Component {
                     types={this.state.types} 
                     key={t.id} 
                     updateTask={this.updateTask}
+                    deleteTask={this.deleteTask}
                 />
             ));
         }
@@ -167,31 +181,27 @@ class Timer extends React.Component {
         const projectOptions = this.state.projects.map((p, i) => <option value={p.id} key={p.id} >{p.name}</option>);
         const typeOptions = this.state.types.map((t, i) => <option value={t.id} key={t.id} >{t.name}</option>);
 
-
         const activeTask = this.state.activeTask;
 
         return (
             <div>
                 <div>
                     <ul className="tasks-rows" >
-                
-                            <TaskRow 
-                                task={activeTask} 
-                                projects={this.state.projects} 
-                                types={this.state.types} 
-                                key={activeTask.id} 
-                                createTask={this.createTask} 
-                                updateTask={this.updateTask}
-                                isActiveTask='true'
-                            />
-                      
+                        <TaskRow 
+                            task={activeTask} 
+                            projects={this.state.projects} 
+                            types={this.state.types} 
+                            key={activeTask.id} 
+                            createTask={this.createTask} 
+                            updateTask={this.updateTask}
+                            deleteTask={this.deleteTask}
+                            isActiveTask='true'
+                        />
                     </ul>
                 </div>
                 <div>
                     <ul className="tasks-rows">
-                        
-                            {tasksRows}
-                        
+                        {tasksRows}
                     </ul>       
                 </div>
             </div>

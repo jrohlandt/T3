@@ -175,19 +175,34 @@ class TaskRow extends React.Component {
                         role="type-select"
                     />
                     <div className="ttr-last">
-                        {this.displayTime(task.startTime)} - {this.displayTime(task.endTime)} | 
-                        <div>
+                        <div className="ttr-times" >
+                            { ! props.isActiveTask 
+                                ? <span>{this.displayTime(task.startTime)} - {this.displayTime(task.endTime)}</span> 
+                                : ''
+                            }
+                        </div>
+                        <div className="ttr-display-timer">
                             { props.isActiveTask && TaskHelper.isStarted(task)
                                 ? <DisplayTimer startTime={task.startTime} />
-                                : this.displayDuration(task) 
+                                : <div> 
+                                        { props.isActiveTask ? '' : '|' } {this.displayDuration(task)} 
+                                    </div>
                             }
                         </div> 
-                        { props.isActiveTask 
-                            ? <button onClick={this.toggleTimer}>
-                                    {TaskHelper.isStarted(task) ? 'stop' : 'start'}
-                                </button>
-                            : ''
-                        }
+                        <div className="ttr-actions">
+                            { props.isActiveTask 
+                                ? <button onClick={this.toggleTimer}>
+                                        {TaskHelper.isStarted(task) ? 'stop' : 'start'}
+                                    </button>
+                                : ''
+                            }
+                            <span 
+                                className="ttr-delete"
+                                onClick={ () => props.deleteTask(task.id) }
+                            >
+                                x
+                            </span>
+                        </div>
                     </div>
                 </div>
                 
