@@ -84,6 +84,7 @@
 .ttr-delete {
     padding: 5px;
     cursor: pointer;
+    color: rgb(119, 119, 119);
 }
 
 .ttr-delete:hover {
