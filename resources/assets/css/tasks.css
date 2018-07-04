@@ -48,6 +48,7 @@
     display: inline-block;
     width: 100px;
     cursor: pointer;
+    color: rgba(0, 0, 0, .7);
 }
 
 .ttr-project-select:hover, .ttr-type-select:hover {
