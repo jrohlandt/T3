@@ -46,7 +46,7 @@ class Timer extends React.Component {
             ],
         };
 
-        this.ajaxUrl = 'http://localhost:3000/api/tasks/';
+        this.ajaxUrl = '/api/tasks/';
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
