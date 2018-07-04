@@ -64,15 +64,17 @@
 .ttr-last {
     float: right;
     width: 60%;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, .1);
 }
 
 .ttr-times {
+    display: none;
     float: left;
 }
 
 .ttr-display-timer {
-
+    font-weight: bold;
+    padding: 0 10px;
 }
 
 .ttr-actions {
@@ -80,9 +82,17 @@
 }
 
 .ttr-delete {
-    color: rgb(241, 59, 59);
-    font-weight: bold;
     padding: 5px;
     cursor: pointer;
+}
+
+.ttr-delete:hover {
+    color: rgb(241, 59, 59);
+}
+
+@media screen and (min-width: 1000px) {
+    .ttr-times {
+        display: block;
+    }
 }
 

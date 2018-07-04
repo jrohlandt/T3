@@ -4,6 +4,8 @@ import DropDown from './DropDown.js';
 import DisplayTimer from './Timer';
 import DateHelper from '../../core/Helpers/DateHelper';
 import TaskHelper from '../../core/Helpers/TaskHelper';
+import Trash from 'react-icons/lib/md/delete';
+
 
 const getProjectName = (projectId, projects) => {
     
@@ -147,7 +149,7 @@ class TaskRow extends React.Component {
         const props = this.props;
         const task = this.state.task;
         return (
-            <li className="timer-task-row">
+            <li className={props.isActiveTask ? 'timer-active-task-row' : 'timer-task-row' } >
 
                 <div className="ttr-left">
                         <div className="ttr-description-wrapper" >
@@ -184,9 +186,7 @@ class TaskRow extends React.Component {
                         <div className="ttr-display-timer">
                             { props.isActiveTask && TaskHelper.isStarted(task)
                                 ? <DisplayTimer startTime={task.startTime} />
-                                : <div> 
-                                        { props.isActiveTask ? '' : '|' } {this.displayDuration(task)} 
-                                    </div>
+                                : this.displayDuration(task)
                             }
                         </div> 
                         <div className="ttr-actions">
@@ -200,7 +200,7 @@ class TaskRow extends React.Component {
                                 className="ttr-delete"
                                 onClick={ () => props.deleteTask(task.id) }
                             >
-                                x
+                                <Trash />
                             </span>
                         </div>
                     </div>
