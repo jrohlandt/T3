@@ -1,5 +1,33 @@
 class DateHelper {
 
+    constructor() {
+        this.dayNames = [
+            {name: 'sunday', shortName: 'sun'},
+            {name: 'monday', shortName: 'mon'},
+            {name: 'tuesday', shortName: 'tue'},
+            {name: 'wednesday', shortName: 'wed'},
+            {name: 'thursday', shortName: 'thu'},
+            {name: 'friday', shortName: 'fri'},
+            {name: 'saturday', shortName: 'sat'}
+        ]
+    
+        this.monthNames = [
+            {name: 'january', shortName: 'jan'},
+            {name: 'february', shortName: 'feb'},
+            {name: 'march', shortName: 'mar'},
+            {name: 'april', shortName: 'apr'},
+            {name: 'may', shortName: 'may'},
+            {name: 'june', shortName: 'jun'},
+            {name: 'july', shortName: 'jul'},
+            {name: 'august', shortName: 'aug'},
+            {name: 'september', shortName: 'sep'},
+            {name: 'october', shortName: 'oct'},
+            {name: 'november', shortName: 'nov'},
+            {name: 'december', shortName: 'dec'},
+        ]
+    }
+    
+
     getTimeOnly(mysqlDateTime) {        
         return this.toMysqlDateTime(new Date(mysqlDateTime), true);
     }
@@ -32,6 +60,10 @@ class DateHelper {
      */
     mysqlToSeconds(dateTimeString) {
         return new Date(dateTimeString).getTime() / 1000;
+    }
+
+    durationInSeconds(startTime, endTime) {
+        return this.mysqlToSeconds(endTime) - this.mysqlToSeconds(startTime);
     }
 
     durationForTitle(durationInSeconds) {
@@ -118,6 +150,26 @@ class DateHelper {
         }
     
         return time;
+    }
+
+    // @param string dateString
+    formatDateHeading(dateString) {
+        const now = new Date();
+        const dateObj = new Date(dateString);
+    
+        const day = this.dayNames[dateObj.getDay()].shortName;
+        const month = this.monthNames[dateObj.getMonth()].shortName;
+        const dateOfMonth = dateObj.getDate();
+        const year = now.getFullYear() === dateObj.getFullYear() ? '' : dateObj.getFullYear(); // Only show year if the date is not from the current year.
+    
+        if (
+            dateObj.getFullYear() === now.getFullYear()
+            && dateObj.getMonth() === now.getMonth()
+            && dateObj.getDate() === now.getDate()
+        ) {
+            return 'today';
+        }
+        return `${day} ${dateOfMonth} ${month} ${year}`;
     }
 }
 

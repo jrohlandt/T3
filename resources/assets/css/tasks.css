@@ -1,3 +1,8 @@
+.tasks-date-heading {
+    padding: 10px;
+    text-transform: capitalize;
+}
+
 .tasks-rows {
     width: 100%;
     list-style: none;

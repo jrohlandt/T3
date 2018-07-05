@@ -23,6 +23,19 @@ class TaskHelper {
         return tasksByDate;
     }
 
+    dailyTotal(tasks) {
+        let total = 0;
+        for (let i=0; i < tasks.length; i++) {
+            let startTime = tasks[i].startTime;
+            let endTime = tasks[i].endTime;
+            let duration = this.date.durationInSeconds(startTime, endTime);
+            total += duration;
+        }
+
+        return this.date.durationForDisplay(total);
+    }
+    
+
     hasNotBeenCreated(task) {
         return task.id === 0;
     }

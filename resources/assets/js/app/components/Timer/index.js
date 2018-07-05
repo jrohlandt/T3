@@ -164,7 +164,10 @@ class Timer extends React.Component {
                     className='tasks-date-heading'
                 >
                     <div >
-                        <h3>{dateKey}</h3>
+                        <h3>
+                            {this.date.formatDateHeading(dateKey)}
+                            <span>{TaskHelper.dailyTotal(tasks[dateKey])}</span>
+                        </h3>
                     </div>
                 </li>
             );
