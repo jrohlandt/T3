@@ -37,6 +37,8 @@ class Timer extends React.Component {
                 { id: 4, name: 'PressPlay' },
                 { id: 5, name: 'Listeruption2' },
                 { id: 6, name: 'LeadGrab' },
+                { id: 7, name: 'Emailspike' },
+                { id: 8, name: 'Timerspike' },
             ],
             types: [
                 { id: 0, name: 'none' },
