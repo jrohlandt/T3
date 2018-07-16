@@ -7,6 +7,7 @@ const bodyParser = require('body-parser'); // populates req.body otherwise it wi
 const multer = require('multer');
 const upload = multer(); // for parsing multipart/form-data
 const Sequelize = require('sequelize');
+const DateHelper = require('./app/Helpers/DateHelper.js');
 
 const app = express();
 app.use(morgan('dev'));
@@ -23,10 +24,14 @@ app.get('/api/tasks', async (req, res) => {
     const Tasks = require('./app/models/').tasks;
     const Op = Sequelize.Op;
     try {
+        // Get last 10 days.
+        const today = new Date();
+        const date = new DateHelper;
+        const minStartDate = date.toMysqlDate(new Date(today.getTime() - (10 * 24 * 60 * 60 * 1000))) + ' 00:00:00';
         const tasks = await Tasks.all({
             where: {
                 startTime: {
-                    [Op.gt]: '2018-01-01 00:00:00'
+                    [Op.gt]: minStartDate
                 },
                 endTime: {
                     [Op.gt]: '2018-01-01 00:00:00'
