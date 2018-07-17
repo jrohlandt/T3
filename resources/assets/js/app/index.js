@@ -8,10 +8,18 @@ import Reports from './components/Reports';
 import Projects from './components/Projects';
 import Clients from './components/Clients';
 
+import FaClock from 'react-icons/lib/fa/clock-o';
+import FaBarChart from 'react-icons/lib/fa/bar-chart';
+import FaFolderO from 'react-icons/lib/fa/folder-o';
+import FaUser from 'react-icons/lib/fa/user';
+
 const App = () => (
     <Router>
         <div id="wrapper">
             <aside id="sidebar-left">
+                <div>
+                    <h3>T3</h3>
+                </div>
                 <nav>
                     <ul>
                         <li>
@@ -19,28 +27,36 @@ const App = () => (
                                 exact
                                 to="/"
                                 activeClassName="left-nav-active"
-                            >Timer
+                            >
+                            <span><FaClock size={20} style={{marginBottom: '5px'}}/></span>                            
+                            Timer
                             </NavLink>
                         </li>
                         <li>
                             <NavLink 
                                 to="/reports"
                                 activeClassName="left-nav-active"
-                            >Reports
+                            >
+                            <span><FaBarChart size={20} style={{marginBottom: '5px'}}/></span> 
+                            Reports
                             </NavLink>
                         </li>
                         <li>
                             <NavLink 
                                 to="/projects"
                                 activeClassName="left-nav-active"
-                            >Projects
+                            >
+                            <span><FaFolderO size={20} style={{marginBottom: '5px'}}/></span>                             
+                            Projects
                             </NavLink>
                         </li>
                         <li>
                             <NavLink 
                                 to="/clients"
                                 activeClassName="left-nav-active"
-                            >Clients
+                            >
+                            <span><FaUser size={20} style={{marginBottom: '5px'}}/></span>                                                         
+                            Clients
                             </NavLink>
                         </li>
                     </ul>
