@@ -28,8 +28,8 @@ const App = () => (
                                 to="/"
                                 activeClassName="left-nav-active"
                             >
-                            <span><FaClock size={20} style={{marginBottom: '5px'}}/></span>                            
-                            Timer
+                            <FaClock size={20} style={{marginBottom: '5px'}}/>                            
+                            <span>Timer</span>
                             </NavLink>
                         </li>
                         <li>
@@ -37,8 +37,8 @@ const App = () => (
                                 to="/reports"
                                 activeClassName="left-nav-active"
                             >
-                            <span><FaBarChart size={20} style={{marginBottom: '5px'}}/></span> 
-                            Reports
+                            <FaBarChart size={20} style={{marginBottom: '5px'}}/>
+                            <span>Reports</span>
                             </NavLink>
                         </li>
                         <li>
@@ -46,8 +46,8 @@ const App = () => (
                                 to="/projects"
                                 activeClassName="left-nav-active"
                             >
-                            <span><FaFolderO size={20} style={{marginBottom: '5px'}}/></span>                             
-                            Projects
+                            <FaFolderO size={20} style={{marginBottom: '5px'}}/>                            
+                            <span>Projects</span>
                             </NavLink>
                         </li>
                         <li>
@@ -55,8 +55,8 @@ const App = () => (
                                 to="/clients"
                                 activeClassName="left-nav-active"
                             >
-                            <span><FaUser size={20} style={{marginBottom: '5px'}}/></span>                                                         
-                            Clients
+                            <FaUser size={20} style={{marginBottom: '5px'}}/>                                                        
+                            <span>Clients</span>
                             </NavLink>
                         </li>
                     </ul>

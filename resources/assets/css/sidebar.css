@@ -7,7 +7,12 @@
     #sidebar-left {
         display: block;
         grid-area: leftnav;
-        background-color: rgba(0, 0, 0, .8);
+        background-color: rgba(40, 42, 55, .95);
+    }
+
+    #sidebar-left h3 {
+        text-align: center;
+        color: rgb(127, 129, 143);
     }
 
     #sidebar-left nav ul li {
@@ -17,12 +22,12 @@
     #sidebar-left nav ul li a {
         color: rgba(255, 255, 255, .7);
         text-decoration: none;
-        padding: 5px 10px ;
+        padding: 5px;
         border-radius: 10px;
     }
 
     #sidebar-left nav ul li a span {
-        margin-right: 10px;
+        display: none;
     }
 
     #sidebar-left nav ul li a.left-nav-active {
@@ -30,4 +35,17 @@
         background: rgba(255, 255, 255, .1);
     }
     
+}
+
+@media screen and (min-width: 1000px) {
+
+    #sidebar-left nav ul li a span {
+        display: inline;
+        margin-left: 10px;
+    }
+
+    #sidebar-left nav ul li a {
+        padding: 5px 30px 5px 10px;
+    }
+
 }

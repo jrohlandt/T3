@@ -1,6 +1,7 @@
 .tasks-date-heading {
     padding: 10px;
     text-transform: capitalize;
+    color: rgb(65, 68, 101);
 }
 
 .tasks-rows {
@@ -12,13 +13,17 @@
 .timer-task-row {
     clear: left;
     height: 50px;
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 1);
+    padding: 5px;
+    border-bottom: 1px solid rgba(116, 118, 143, .1);
 }
 
 .timer-active-task-row {
     height: 70px;
     margin-bottom: 30px;
+}
+
+.ttr-left, .ttr-right {
+    height: 100%;
 }
 
 .ttr-left {
@@ -34,37 +39,21 @@
 .ttr-description-wrapper {
     float: left;
     width: 70%;
+    height: 100%;
 }
 
 .ttr-description-wrapper input[type="text"] {
     width: 90%;
+    height: 100%;
+    color: rgba(255, 255, 255, .4);
+    background-color: rgb(40, 42, 55);
+    /* background-color: rgba(255, 255, 255, .05); */
+    padding: 0 10px;
+    border: none;
 }
 
-.ttr-project-select {
-    display: inline-block;
-    max-width: 150px;
-    padding: 5px;
-    font-size: .8em;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.ttr-type-select {
-    display: inline-block;
-    width: 100px;
-    cursor: pointer;
-    color: rgba(0, 0, 0, .7);
-}
-
-.ttr-project-select:hover, .ttr-type-select:hover {
-    background: grey;
-    border-radius: 5px;
-}
-
-.ttr-no-selected {
-    display: inline-block;
-    padding: 5px 10px;
-    cursor: pointer;
+.ttr-description-wrapper input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, .15);
 }
 
 .ttr-last {
@@ -96,6 +85,39 @@
 .ttr-delete:hover {
     color: rgb(241, 59, 59);
 }
+
+/* dropdown */
+.ttr-dropdown {
+    height: 100%;
+}
+
+.ttr-project-select, .ttr-type-select, .ttr-no-selected {
+    display: inline-block;
+    padding: 15px 5px;
+    font-size: .8em;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.ttr-project-select {
+    max-width: 150px;
+}
+
+.ttr-type-select {
+    width: 100px;
+}
+
+.ttr-project-select:hover, .ttr-type-select:hover {
+    background: grey;
+    border-radius: 5px;
+}
+
+.ttr-dropdown-icon {
+    color: rgb(65, 68, 101);
+    font-weight: bold;
+}
+
+
 
 @media screen and (min-width: 1000px) {
     .ttr-times {

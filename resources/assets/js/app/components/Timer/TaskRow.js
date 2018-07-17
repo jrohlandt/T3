@@ -158,6 +158,7 @@ class TaskRow extends React.Component {
                                 onChange={ this.handleDescriptionChange } 
                                 onBlur={ this.handleDescriptionOnBlur }
                                 value={ task.description }
+                                placeHolder={props.isActiveTask ? 'Type task description...' : 'no description'}
                             />
                         </div>
 

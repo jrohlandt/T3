@@ -51,25 +51,27 @@ class DropDown extends React.Component {
         let icon;
         switch (props.role) {
             case 'project-select':
-                icon = <FaFolderO/>;
+                icon = <FaFolderO size={20}/>;
                 break;
             case 'type-select':
-                icon = <FaTag/>;
+                icon = <FaTag size={20}/>;
                 break;
             default:
-                icon = <FaFolderO/>;
+                icon = <FaFolderO size={20}/>;
         }
 
         return (
             <div 
-                className={ selectedName ? 'ttr-' + props.role : 'ttr-no-selected' } 
+                className={ selectedName ? 'ttr-dropdown ttr-' + props.role : 'ttr-dropdown ttr-no-selected' } 
             >
                 <div
                     tabIndex={0}
                     onClick={this.toggleDropdown} 
                     onBlur={this.handleOnBlur}  
                 >
-                    <div style={ itemColor ? {'color': `rgb(${itemColor})`} : {} }>
+                    <div 
+                        className='ttr-dropdown-icon'
+                        style={ itemColor ? {'color': `rgb(${itemColor})`} : {} }>
                         { selectedName ? selectedName : icon }
                     </div>
                     { this.state.expand 
