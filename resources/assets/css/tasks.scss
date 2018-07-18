@@ -1,7 +1,7 @@
 .tasks-date-heading {
     padding: 10px;
     text-transform: capitalize;
-    color: rgb(65, 68, 101);
+    color: $grey-darker;
 }
 
 .tasks-rows {
@@ -45,15 +45,15 @@
 .ttr-description-wrapper input[type="text"] {
     width: 90%;
     height: 100%;
-    color: rgba(255, 255, 255, .4);
-    background-color: rgb(40, 42, 55);
+    color: $grey-darker;
+    background-color: $main-background-color;
     /* background-color: rgba(255, 255, 255, .05); */
     padding: 0 10px;
     border: none;
 }
 
 .ttr-description-wrapper input[type="text"]::placeholder {
-    color: rgba(255, 255, 255, .15);
+    color: $grey-lighter;
 }
 
 .ttr-last {
@@ -79,7 +79,7 @@
 .ttr-delete {
     padding: 5px;
     cursor: pointer;
-    color: rgb(119, 119, 119);
+    color: $grey-light;
 }
 
 .ttr-delete:hover {
@@ -107,15 +107,14 @@
     width: 100px;
 }
 
-.ttr-project-select:hover, .ttr-type-select:hover {
-    background: grey;
-    border-radius: 5px;
-}
-
 .ttr-dropdown-icon {
-    color: rgb(65, 68, 101);
+    color: $task-row-icons-color;
     font-weight: bold;
 }
+
+// .ttr-dropdown-icon:hover {
+//     color: darken($default-color, 30%); or $grey-dark
+// }
 
 
 

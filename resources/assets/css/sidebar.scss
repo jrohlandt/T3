@@ -7,7 +7,7 @@
     #sidebar-left {
         display: block;
         grid-area: leftnav;
-        background-color: rgba(40, 42, 55, .95);
+        background-color: $leftnav-background-color;
     }
 
     #sidebar-left h3 {
@@ -20,7 +20,7 @@
     }
 
     #sidebar-left nav ul li a {
-        color: rgba(255, 255, 255, .7);
+        color: $leftnav-item-color;
         text-decoration: none;
         padding: 5px;
         border-radius: 10px;
@@ -31,8 +31,12 @@
     }
 
     #sidebar-left nav ul li a.left-nav-active {
-        color: white;
-        background: rgba(255, 255, 255, .1);
+        color: lighten($leftnav-item-color, 50%);
+        background: $leftnav-active-item-background;
+    }
+
+    #sidebar-left nav ul li a:hover {
+        color: lighten($leftnav-item-color, 50%);
     }
     
 }

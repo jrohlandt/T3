@@ -59,6 +59,14 @@ module.exports = {
                     'css-loader'
                 ]
             },
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ]
+            },
         ]
     },
     plugins: [

@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import FaFolderO from 'react-icons/lib/fa/folder-o';
+import FaFolder from 'react-icons/lib/fa/folder';
 import FaTag from 'react-icons/lib/fa/tag';
 
 class DropDown extends React.Component {
@@ -51,13 +51,13 @@ class DropDown extends React.Component {
         let icon;
         switch (props.role) {
             case 'project-select':
-                icon = <FaFolderO size={20}/>;
+                icon = <FaFolder size={14}/>;
                 break;
             case 'type-select':
-                icon = <FaTag size={20}/>;
+                icon = <FaTag size={14}/>;
                 break;
             default:
-                icon = <FaFolderO size={20}/>;
+                icon = <FaFolder size={14}/>;
         }
 
         return (

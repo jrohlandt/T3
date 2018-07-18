@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
-import '../../css/main.css';
+import '../../css/main.scss';
 
 import Timer from './components/Timer/index.js';
 import Reports from './components/Reports';
