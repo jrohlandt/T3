@@ -5,8 +5,10 @@
 @media screen and (min-width: 700px) {
 
     #sidebar-left {
+        position: fixed;
         display: block;
         grid-area: leftnav;
+        height: 100%;
         background-color: $leftnav-background-color;
     }
 
