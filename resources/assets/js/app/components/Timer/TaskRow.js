@@ -158,7 +158,7 @@ class TaskRow extends React.Component {
                                 onChange={ this.handleDescriptionChange } 
                                 onBlur={ this.handleDescriptionOnBlur }
                                 value={ task.description }
-                                placeHolder={props.isActiveTask ? 'Type task description...' : 'no description'}
+                                placeholder={props.isActiveTask ? 'Type task description...' : 'no description'}
                             />
                         </div>
 
@@ -192,16 +192,18 @@ class TaskRow extends React.Component {
                         </div> 
                         <div className="ttr-actions">
                             { props.isActiveTask 
-                                ? <button onClick={this.toggleTimer}>
+                                ? <div 
+                                        className={TaskHelper.isStarted(task) ? 'ttr-stop-button' : 'ttr-start-button'}
+                                        onClick={this.toggleTimer}>
                                         {TaskHelper.isStarted(task) ? 'stop' : 'start'}
-                                    </button>
+                                    </div>
                                 : ''
                             }
                             <span 
                                 className="ttr-delete"
                                 onClick={ () => props.deleteTask(task.id) }
                             >
-                                <Trash />
+                                <Trash size={20} />
                             </span>
                         </div>
                     </div>

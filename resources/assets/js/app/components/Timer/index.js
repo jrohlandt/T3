@@ -39,6 +39,10 @@ class Timer extends React.Component {
                 { id: 6, name: 'LeadGrab' },
                 { id: 7, name: 'Emailspike', color: '181, 162, 228' },
                 { id: 8, name: 'Timerspike', color: '181, 162, 228' },
+                { id: 9, name: 'SeoSnapshot', },
+                { id: 10, name: 'ProjectHub', },
+                { id: 11, name: 'PinPoint', },
+                { id: 12, name: 'TicketHub', },
             ],
             types: [
                 { id: 0, name: 'none' },

@@ -1,7 +1,8 @@
 .tasks-date-heading {
     padding: 10px;
+    font-size: .9em;
     text-transform: capitalize;
-    color: $grey-darker;
+    color: $grey-dark;
 }
 
 .tasks-rows {
@@ -59,21 +60,46 @@
 .ttr-last {
     float: right;
     width: 60%;
-    background-color: rgba(0, 0, 0, .1);
 }
 
 .ttr-times {
     display: none;
     float: left;
+    font-size: .8em;
+    padding: 17px 10px 17px 5px;
+    color: $task-row-start-end-times-color;
 }
 
 .ttr-display-timer {
+    float: left;
     font-weight: bold;
-    padding: 0 10px;
+    padding: 15px 10px;
 }
 
 .ttr-actions {
     float: right;
+    padding: 15px 10px;
+}
+
+.ttr-start-button, .ttr-stop-button {
+    float: left;
+    height: 35px;
+    width: 35px;
+    text-align: center;
+    line-height: 35px;
+    color: white;
+    font-size: .8em;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.ttr-start-button {
+    background: rgb(24, 179, 24);
+}
+
+.ttr-stop-button {
+    background: rgb(233, 16, 16);
 }
 
 .ttr-delete {
@@ -118,9 +144,10 @@
 
 
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1150px) {
     .ttr-times {
-        display: block;
+        display: inline-block;
+        float: left;
     }
 }
 
