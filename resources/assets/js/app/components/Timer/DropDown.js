@@ -62,22 +62,24 @@ class DropDown extends React.Component {
 
         return (
             <div 
-                className={ selectedName ? 'ttr-dropdown ttr-' + props.role : 'ttr-dropdown ttr-no-selected' } 
+                className={ 
+                    (selectedName ? 'ttr-dropdown ttr-' + props.role + ' ' : 'ttr-dropdown ttr-no-selected ') + (this.state.expand ? 'ttr-dropdown-expanded' : '')} 
             >
-                <div
+                <div className='ttr-dropdown-list-wrapper'
                     tabIndex={0}
                     onClick={this.toggleDropdown} 
-                    onBlur={this.handleOnBlur}  
+                    onBlur={this.handleOnBlur} 
                 >
                     <div 
                         className='ttr-dropdown-icon'
-                        style={ itemColor ? {'color': `rgb(${itemColor})`} : {} }>
+                        style={ itemColor ? {'color': `rgb(${itemColor})`} : {} }
+                    >
                         { selectedName ? selectedName : icon }
                     </div>
                     { this.state.expand 
-                        ? <ul style={{position: 'absolute', background: 'white', zIndex: 10}}>
-                                {items}
-                            </ul>
+                        ? <div className='ttr-dropdown-list'>
+                                <ul>{items}</ul>
+                            </div>
                         : ''
                     }
                 </div>
