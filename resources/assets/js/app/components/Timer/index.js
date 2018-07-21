@@ -52,7 +52,7 @@ class Timer extends React.Component {
             ],
         };
 
-        this.ajaxUrl = '/tasks/';
+        this.ajaxUrl = '/app/tasks/';
         this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 

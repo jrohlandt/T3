@@ -1,6 +1,7 @@
 'use strict'
 
-const Kernel = require('../Kernel.js');
+const MiddlewareHelper = require('./MiddlewareHelper.js');
+
 
 class RouteHelper {
     constructor(app) {
@@ -31,17 +32,11 @@ class RouteHelper {
 
     makeRoute(httpMethod, route, controllerMethod, middleware=[]) {
         
-        let m = [];
-        for (let i=0; i < middleware.length; ++i) {
-            if (Kernel.middleware[middleware[i]] != undefined) {
-                let fn = require(Kernel.middleware[middleware[i]]);
-                m.push(fn);
-            }
-        }
+        
         
         this.app[httpMethod](
             route, 
-            m, 
+            MiddlewareHelper.makeMiddlewareArray(middleware),
             this.catchErrors(this.getControllerMethod(controllerMethod))
         );
     }
