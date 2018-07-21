@@ -1,0 +1,11 @@
+{
+    "app_env": "development",
+    "app_key": "j290ur382h3rf012jjid2389ujhfr320fjh32",
+    "sequelize": {
+        "username": "root",
+        "password": "xocjm",
+        "database": "t3_local",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    }
+}

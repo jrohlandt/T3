@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var tasks = sequelize.define('tasks', {
+  var t = sequelize.define('tasks', {
     description: DataTypes.STRING,
     projectId: DataTypes.INTEGER,
     clientId: DataTypes.INTEGER,
@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     tzName: DataTypes.STRING
 
   }, {});
-  tasks.associate = function(models) {
+  t.associate = function(models) {
     // associations can be defined here
   };
-  return tasks;
+  return t;
 };
