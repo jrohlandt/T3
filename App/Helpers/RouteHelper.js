@@ -9,6 +9,10 @@ class RouteHelper {
         this.catchErrors = fn => (...args) => fn(...args).catch(args[2]);
     }
 
+    /**
+     * getControllerMethod 
+     * @param {string} controllerAndMethod e.g. 'TaskController.index' 
+     */
     getControllerMethod(controllerAndMethod) {
         const methodInfo = controllerAndMethod.split('.');
         return require(`../Controllers/Backend/${methodInfo[0]}.js`)[methodInfo[1]];
@@ -31,9 +35,6 @@ class RouteHelper {
     }
 
     makeRoute(httpMethod, route, controllerMethod, middleware=[]) {
-        
-        
-        
         this.app[httpMethod](
             route, 
             MiddlewareHelper.makeMiddlewareArray(middleware),
