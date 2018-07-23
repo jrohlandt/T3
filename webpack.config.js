@@ -3,6 +3,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const publicPath = path.resolve(__dirname, 'public');
+const viewsPath = path.resolve(__dirname, 'resources', 'views');
 const jsPublicPath = publicPath + path.join('/', 'assets', 'js', 'app');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -34,6 +35,7 @@ module.exports = {
     output: {
         filename: '[name].[chunkhash].js',
         path: jsPublicPath,
+        publicPath: '/assets/js/app',
     },
     devServer: {
         contentBase: publicPath,
@@ -74,8 +76,8 @@ module.exports = {
         new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
-            filename: publicPath + path.join('/', 'index.html'),
-            template: '!!ejs-loader!./resources/assets/html/index.ejs',
+            filename: viewsPath + path.join('/', 'index.pug'),
+            template: '!!ejs-loader!./resources/assets/html/index.pug.ejs',
             inject: false,
         }),
     ],

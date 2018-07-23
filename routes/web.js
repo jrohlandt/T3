@@ -8,6 +8,7 @@ module.exports = (app) => {
     app.use('/app', (req, res, next) => {
         MiddlewareHelper.runMiddleWare(req, res, next, ['auth']);
     });
+    Route.get('/app', 'TaskController.index');
     Route.get('/app/tasks', 'TaskController.index');
     Route.get('/app/tasks/active', 'TaskController.getActiveTask');
     Route.post('/app/tasks', 'TaskController.create');

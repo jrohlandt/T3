@@ -55,6 +55,7 @@ class Ajax {
 
 		return new Promise(
 			( resolve, reject ) => {
+				axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 				axios[ requestType.toLowerCase() ]( this.url, data )
 				.then(
 					response => resolve( response.data ) 

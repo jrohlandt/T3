@@ -75,8 +75,8 @@ module.exports = {
         new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
-            filename: publicPath + path.join('/', 'index.html'),
-            template: '!!ejs-loader!./resources/assets/html/index.ejs',
+            filename: viewsPath + path.join('/', 'index.pug'),
+            template: '!!ejs-loader!./resources/assets/html/index.pug.ejs',
             inject: false,
             alwaysWriteToDisk: true, // Needed when running Webpack dev server. It relies on HtmlWebpackHarddiskPlugin.
         }),

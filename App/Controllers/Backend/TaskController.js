@@ -7,6 +7,12 @@ module.exports = {
     * index
     */
     async index(req, res) {
+
+        console.log('req.xhr: ', req.xhr, req.headers);
+        if (!req.xhr) {
+            return res.render('index', { title: 'T3' });
+        }
+
         const Op = require('sequelize').Op;
         // Get last 10 days.
         const today = new Date();

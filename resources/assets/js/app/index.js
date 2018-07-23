@@ -25,7 +25,7 @@ const App = () => (
                         <li>
                             <NavLink 
                                 exact
-                                to="/"
+                                to="/app"
                                 activeClassName="left-nav-active"
                             >
                             <FaClock size={20} style={{marginBottom: '5px'}}/>                            
@@ -34,7 +34,7 @@ const App = () => (
                         </li>
                         <li>
                             <NavLink 
-                                to="/reports"
+                                to="/app/reports"
                                 activeClassName="left-nav-active"
                             >
                             <FaBarChart size={20} style={{marginBottom: '5px'}}/>
@@ -43,7 +43,7 @@ const App = () => (
                         </li>
                         <li>
                             <NavLink 
-                                to="/projects"
+                                to="/app/projects"
                                 activeClassName="left-nav-active"
                             >
                             <FaFolderO size={20} style={{marginBottom: '5px'}}/>                            
@@ -52,7 +52,7 @@ const App = () => (
                         </li>
                         <li>
                             <NavLink 
-                                to="/clients"
+                                to="/app/clients"
                                 activeClassName="left-nav-active"
                             >
                             <FaUser size={20} style={{marginBottom: '5px'}}/>                                                        
@@ -63,10 +63,10 @@ const App = () => (
                 </nav>
             </aside>
             <main>
-                <Route exact path="/" component={Timer} />
-                <Route path="/reports" component={Reports} />
-                <Route path="/projects" component={Projects} />
-                <Route path="/clients" component={Clients} />
+                <Route exact path="/app" component={Timer} />
+                <Route path="/app/reports" component={Reports} />
+                <Route path="/app/projects" component={Projects} />
+                <Route path="/app/clients" component={Clients} />
             </main>
         </div>
     </Router>
