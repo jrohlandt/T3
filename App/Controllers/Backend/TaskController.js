@@ -39,6 +39,8 @@ module.exports = {
      * getActiveTask
      */
     async getActiveTask(req, res) {
+        console.log('req.xhr ACTIVETASK: ', req.xhr, req.headers);
+
         // Fetch only the last created started task.
         const tasks = await Task.all({
             order: [

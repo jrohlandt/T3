@@ -55,7 +55,9 @@ class Ajax {
 
 		return new Promise(
 			( resolve, reject ) => {
-				axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+				axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'; // Tell server that this is a ajax request.
+				// axios.defaults.headers['Access-Control-Request-Headers'] = 'Content-Type';
+				axios.defaults.withCredentials = true; // Send cookie to server.
 				axios[ requestType.toLowerCase() ]( this.url, data )
 				.then(
 					response => resolve( response.data ) 

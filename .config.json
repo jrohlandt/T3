@@ -1,6 +1,6 @@
 {
-    "app_env": "development",
-    "app_key": "j290ur382h3rf012jjid2389ujhfr320fjh32",
+    "APP_ENV": "development",
+    "APP_SECRET": "j290ur382h3rf012jjid2389ujhfr320fjh32",
     "sequelize": {
         "username": "root",
         "password": "xocjm",
