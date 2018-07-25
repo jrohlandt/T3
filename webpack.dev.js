@@ -3,6 +3,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const publicPath = path.resolve(__dirname, 'public');
+const viewsPath = path.resolve(__dirname, 'resources', 'views');
 const jsPublicPath = publicPath + path.join('/', 'assets', 'js', 'app');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');

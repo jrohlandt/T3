@@ -10,7 +10,7 @@ module.exports = {
 
         console.log('req.xhr: ', req.xhr, req.headers);
         if (!req.xhr) {
-            return res.render('index', { title: 'T3' });
+            return res.render('index', { title: 'T3', csrfToken: req.csrfToken() });
         }
 
         const Op = require('sequelize').Op;
@@ -39,7 +39,7 @@ module.exports = {
      * getActiveTask
      */
     async getActiveTask(req, res) {
-        console.log('req.xhr ACTIVETASK: ', req.xhr, req.headers);
+        console.log(req.session, 'req.xhr ACTIVETASK: ', req.xhr, req.headers);
 
         // Fetch only the last created started task.
         const tasks = await Task.all({
