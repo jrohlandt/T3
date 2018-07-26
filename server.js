@@ -40,6 +40,10 @@ app.use(session({
     saveUninitialized: false,
     secret: conf.APP_SECRET,
     store: new SessionStore(),
+    cookie: { 
+        maxAge: 3600000, // Expire every hour for development purposes (Todo handle expired session).
+        httpOnly: true,
+    }, 
 }));
 
 app.use(csrf());
