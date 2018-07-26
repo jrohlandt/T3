@@ -15,4 +15,6 @@ module.exports = (app) => {
     Route.put('/app/tasks', 'TaskController.update');
     Route.delete('/app/tasks', 'TaskController.delete');
 
+    app.get('/login', Route.catchErrors(require('../App/Controllers/Auth/LoginController.js').login));
+
 }

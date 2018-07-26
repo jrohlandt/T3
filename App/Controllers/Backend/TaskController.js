@@ -10,7 +10,7 @@ module.exports = {
 
         console.log('req.xhr: ', req.xhr, req.headers);
         if (!req.xhr) {
-            return res.render('index', { title: 'T3', csrfToken: req.csrfToken() });
+            return res.render('backend/index', { title: 'T3', csrfToken: req.csrfToken() });
         }
 
         const Op = require('sequelize').Op;

@@ -1,0 +1,20 @@
+doctype html
+html
+	head
+		meta(http-equiv='Content-Type', content='text/html;charset=UTF-8')
+		meta(name='viewport' content='width=device-width,initial-scale=1')
+		meta(name='csrf_token' content= csrfToken)
+		title=(title ? title : 'T3')
+		link(rel='stylesheet', href='/assets/css/style.css')
+		block stylesheets
+		
+	body
+		.container
+			header(class='box' id='header')
+				img(src='/filmreel_logo.png' id='header-logo' )
+				if showSearch
+					input(type='text' name='quick_search' id='quick-search' placeholder='search')
+			.content
+				block content
+				
+		block scripts

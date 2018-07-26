@@ -76,7 +76,7 @@ module.exports = {
         new CleanWebpackPlugin([jsPublicPath]),
         new HtmlWebpackPlugin({
             title: 't3',
-            filename: viewsPath + path.join('/', 'index.pug'),
+            filename: viewsPath + path.join('/backend/', 'index.pug'),
             template: '!!ejs-loader!./resources/assets/html/index.pug.ejs',
             inject: false,
         }),
