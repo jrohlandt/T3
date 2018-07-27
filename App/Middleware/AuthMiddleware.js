@@ -1,11 +1,11 @@
 module.exports = function(req, res, next) {
 
-    return next(); // ignore auth for now.
+    // return next(); // ignore auth for now.
 
     if (req.isAuthenticated()) {
         return next();
     }
 
-    res.redirect('/auth/login');
+    res.redirect('/login');
 
 }

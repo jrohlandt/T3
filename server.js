@@ -7,6 +7,7 @@ const bodyParser = require('body-parser'); // populates req.body otherwise it wi
 const multer = require('multer');
 const session = require('express-session');
 const csrf = require('csurf');
+const passport = require('passport');
 const upload = multer(); // for parsing multipart/form-data
 const conf = require('./.config.json');
 const isDev = conf.APP_ENV === 'development';
@@ -47,6 +48,8 @@ app.use(session({
 }));
 
 app.use(csrf());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.get('/api', (req, res) => res.status(200).json('welcome to api'));

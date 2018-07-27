@@ -6,13 +6,16 @@ block stylesheets
 block content
 	h1 Sign in
 	form(method='post', action='/auth/login')
-		input(type='hidden', name='_csrf' value= csrfToken)
 		.form-group
 			label Email
 			input(name='email', type='text', placeholder='Enter email')
 		.form-group
-			label Password
+			label Password TODO CHECK PASSWORD ON SERVER
 			input(name='password', type='password', placeholder='Choose password')
 
 		.form-group
 			input(name='submit' type='submit' value='Sign in')
+
+block scripts
+	script(src="https://unpkg.com/axios/dist/axios.min.js")
+	script(src="/assets/js/auth/login.js")
