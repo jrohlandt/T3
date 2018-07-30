@@ -7,6 +7,7 @@ window.onload = function(e) {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
+        var loginError = document.getElementById('login-error');
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
@@ -22,8 +23,16 @@ window.onload = function(e) {
                 'CSRF-Token': token,
             }
         })
-        .then(function(res) { console.log('axios res: ', res); window.location = '/app'})
-        .catch(function(err) { console.log('err: ', err)});
+        .then(function(res) { 
+            loginError.style.display = 'none';
+            window.location = '/app';
+            
+        })
+        .catch(function(err) { 
+            loginError.style.display = 'block';
+            console.log('err: ', err);
+
+        });
     });
 };
 console.log('hello')

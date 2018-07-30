@@ -5,12 +5,13 @@ block stylesheets
 	
 block content
 	h1 Sign in
+	h3#login-error Login failed
 	form(id='login-form' method='post', action='/auth/login')
 		.form-group
 			label Email
 			input(id='email' name='email', type='text', placeholder='Enter email')
 		.form-group
-			label Password TODO CHECK PASSWORD ON SERVER
+			label Password
 			input(id='password' name='password', type='password', placeholder='Choose password')
 
 		.form-group

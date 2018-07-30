@@ -25,8 +25,6 @@ module.exports = {
 
 	async authenticate(req, res, next) {
 
-		
-
 		passport.authenticate('local', function(err, user, info) {
 			console.log('local : ', user);
 			if (err) {
@@ -34,7 +32,7 @@ module.exports = {
 			}
 
 			if (!user) { 
-				return res.status(404).json({message: 'Authentication failed'}); 
+				return res.status(401).json({message: 'Authentication failed'}); 
 			}
 
 			try {

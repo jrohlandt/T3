@@ -14,8 +14,13 @@ input[type="submit"] {
 	height: 45px;
 }
 
+#login-error {
+	display:none;
+	color: rgb(240, 80, 80);
+}
 @media screen and (min-width: 550px) {
 	form {
 		width: 50%;
 	}
 }
+
