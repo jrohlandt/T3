@@ -25,37 +25,30 @@ module.exports = {
 
 	async authenticate(req, res, next) {
 
-		// console.log('login: ', req.body); 
-		// return;
-		// req.checkBody('email', 'Please enter a valid email address').isEmail();
-		// req.checkBody('password', 'Please enter a password').notEmpty();
+		
 
-		// if (req.validationErrors()) {
-		// 	req.flash('success', 'You have been logged outa here');
-		// 	return res.redirect('/auth/login'); 
-		// } else {
-			passport.authenticate('local', function(err, user, info) {
-				if (err) {
-					return next(err);
-				}
+		passport.authenticate('local', function(err, user, info) {
+			console.log('local : ', user);
+			if (err) {
+				return next(err);
+			}
 
-				if (!user) { 
-					return res.status(404).json({message: 'Authentication failed'}); 
-				}
+			if (!user) { 
+				return res.status(404).json({message: 'Authentication failed'}); 
+			}
 
-				try {
-					req.logIn(user, function(err) {
-						if (err) { 
-							return next(err); 
-						}
-						return res.status(200).json({message: 'Success! logged in.'});
-					});
-				} catch (err) {
-					console.log('req.logIn: ', err);
-				}
-				
-			})(req, res, next);
-		// }
+			try {
+				req.logIn(user, function(err) {
+					if (err) { 
+						return next(err); 
+					}
+					return res.status(200).json({message: 'Success! logged in.'});
+				});
+			} catch (err) {
+				console.log('req.logIn: ', err);
+			}
+			
+		})(req, res, next);
 	}
 }
 
@@ -77,27 +70,26 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
 	new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, 
 	async (email, password, done) => {
-
+		console.log('local strategy: ', email, password);
 		const user = await User.find({where: { email: email }});
-		console.log('login user: ', user);
-		user ? done(null, user) : done(null, false);
 
-	// userModel.findByEmail(email)
-	// 	.then(user => {
-	// 		if (!user) {
-	// 			done(null, false);
-	// 		} else {
-	// 			userModel.checkPassword(password, user.password)
-	// 				.then(isMatch => {
-	// 					isMatch === true ? done(null, user) : done(null, false);
-	// 				})
-	// 				.catch(error => {
-	// 					console.log(error);
-	// 					done(null, false);
-	// 				});
-	// 		}
-	// 	})
-	// 	.catch(error => {
-	// 		console.log(error);
-	// 	});
+		if (!user)
+			return done(null, false);
+		
+		if (await checkPassword(password, user.password)) 
+			return done(null, user);
+
+		return done(null, false);
 }));
+
+const checkPassword = (p1, p2) => {
+	const bcrypt = require('bcrypt');
+	return new Promise((resolve, reject) => {
+	  bcrypt.compare(p1, p2, function (error, isMatch) {
+		if (error) {
+		  return reject(error);
+		}
+		return isMatch ? resolve(true) : resolve(false);
+	  })
+	})
+  }

@@ -5,13 +5,13 @@ block stylesheets
 	
 block content
 	h1 Sign in
-	form(method='post', action='/auth/login')
+	form(id='login-form' method='post', action='/auth/login')
 		.form-group
 			label Email
-			input(name='email', type='text', placeholder='Enter email')
+			input(id='email' name='email', type='text', placeholder='Enter email')
 		.form-group
 			label Password TODO CHECK PASSWORD ON SERVER
-			input(name='password', type='password', placeholder='Choose password')
+			input(id='password' name='password', type='password', placeholder='Choose password')
 
 		.form-group
 			input(name='submit' type='submit' value='Sign in')
