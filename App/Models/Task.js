@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var t = sequelize.define('tasks', {
     description: DataTypes.STRING,
+    userId: DataTypes.STRING,
     projectId: DataTypes.INTEGER,
     clientId: DataTypes.INTEGER,
     typeId: DataTypes.INTEGER,

@@ -27,6 +27,7 @@ class Timer extends React.Component {
         super(props);
 
         this.state = {
+            authUser: {},
             tasks: [],
             activeTask: Object.assign({}, emptyTask),
             projects: [
@@ -53,7 +54,6 @@ class Timer extends React.Component {
         };
 
         this.ajaxUrl = '/app/tasks/';
-        this.ajax = new Ajax( {url: this.ajaxUrl} );
         this.date = new DateHelper;
 
         this.createTask = this.createTask.bind(this);
@@ -64,7 +64,7 @@ class Timer extends React.Component {
     }
 
     getTasks() {
-        this.ajax.get()
+        Ajax.get(this.ajaxUrl)
             .then(res => {
                 this.setState({
                     tasks: res.tasks,
@@ -74,8 +74,7 @@ class Timer extends React.Component {
     }
 
     getActiveTask() {
-        const ajax = new Ajax({ url: this.ajaxUrl + 'active' });
-        ajax.get()
+        Ajax.get(this.ajaxUrl + 'active')
             .then(res => {
 
                 if (res.task == undefined) { 
@@ -93,7 +92,7 @@ class Timer extends React.Component {
         if (task.id != 0)
             return;
 
-        this.ajax.post( task )
+        Ajax.post(this.ajaxUrl, task)
             .then(res => this.setState( {activeTask: Object.assign(task, res.task)} ))
             .catch(err => console.log('Task could not be created. Error: ', err));
     }
@@ -130,7 +129,7 @@ class Timer extends React.Component {
 
 
         // Update server.
-        this.ajax.put( task )
+        Ajax.put(this.ajaxUrl, task)
             .catch(err => console.log('Task could not be updated. Error: ', err));
     }
 
@@ -144,13 +143,20 @@ class Timer extends React.Component {
             }
         });
 
-        this.ajax.delete( {id: id} )
+        Ajax.delete(this.ajaxUrl, {id: id} )
             .catch(err => console.log('Task could not be deleted. Error: ', err));
     }
 
     componentDidMount() {
         this.getTasks();
         this.getActiveTask();
+        Ajax.get('/app/getAuthUser')
+            .then(res => {
+                this.setState({authUser: res.user});
+            })
+            .catch(err => {
+                window.location.href = '/login';
+            });
     }
 
     render() {

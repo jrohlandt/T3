@@ -20,6 +20,7 @@ module.exports = {
         const minStartDate = date.toMysqlDate(new Date(today.getTime() - (10 * 24 * 60 * 60 * 1000))) + ' 00:00:00';
         const tasks = await Task.all({
             where: {
+                userId: req.user.id,
                 startTime: {
                     [Op.gt]: minStartDate
                 },
@@ -43,6 +44,9 @@ module.exports = {
 
         // Fetch only the last created started task.
         const tasks = await Task.all({
+            where: {
+                userId: req.user.id,
+            },
             order: [
                 ['createdAt', 'DESC'],
             ],
@@ -77,7 +81,9 @@ module.exports = {
                     task: body,
                 });
             }
+            console.log('CREATE REQ USER: ', req.user);
             const task = await Task.create({
+                userId: req.user.id,
                 description: body.description,
                 projectId: body.projectId,
                 typeId: body.typeId,
@@ -111,7 +117,12 @@ module.exports = {
                 });
             }
     
-            const task = await Task.findById(body.id);
+            const task = await Task.find({
+                where: {
+                    id: body.id,
+                    userId: req.user.id,
+                }
+            });
             await task.update({
                 description: body.description,
                 startTime: body.startTime,
@@ -140,7 +151,12 @@ module.exports = {
      */
     async delete(req, res) {
         try {
-            const task = await Task.findById(req.query.id);
+            const task = await Task.find({
+                where: {
+                    id: req.query.id,
+                    userId: req.user.id,
+                }
+            });
             await task.destroy();
     
             return res.status(200).json({

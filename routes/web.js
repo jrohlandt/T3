@@ -15,9 +15,11 @@ module.exports = (app) => {
     Route.put('/app/tasks', 'TaskController.update');
     Route.delete('/app/tasks', 'TaskController.delete');
 
-    const LoginController = require('../App/Controllers/Auth/LoginController.js');
-    app.get('/login', Route.catchErrors(LoginController.login));
-    app.post('/login', Route.catchErrors(LoginController.authenticate));
-    app.get('/logout', Route.catchErrors(LoginController.logout));
+    const AuthController = require('../App/Controllers/Auth/AuthController.js');
+    app.get('/app/getAuthUser', Route.catchErrors(AuthController.getAuthUser));
+
+    app.get('/login', Route.catchErrors(AuthController.login));
+    app.post('/login', Route.catchErrors(AuthController.authenticate));
+    app.get('/logout', Route.catchErrors(AuthController.logout));
 
 }

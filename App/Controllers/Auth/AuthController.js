@@ -47,6 +47,23 @@ module.exports = {
 			}
 			
 		})(req, res, next);
+	},
+
+	async getAuthUser(req, res) {
+		
+		if (req.user) {
+			const user = req.user;
+
+			return res.status(200).json({
+				user: {
+					id: user.id,
+					firstName: user.firstName,
+					email: user.email,
+				}
+			});
+		}
+		
+		return res.status(401).json({message: 'User is not authenticated.'});
 	}
 }
 
