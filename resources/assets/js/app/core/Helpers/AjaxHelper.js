@@ -57,12 +57,15 @@ module.exports = {
 				}
 				axios.defaults.withCredentials = true; // Send cookie to server.
 				axios[ requestType.toLowerCase() ]( url, data )
-					.then(
-						response => resolve( response.data ) 
-					)
-					.catch(
-						error => reject( error.response.data )
-					);
+					.then(response => resolve(response.data))
+					.catch(error => {
+						if (error.response.status == 403) {
+							console.log('Ajax error: ', error);
+							window.location.href = '/login';
+							return;
+						}						
+						reject( error.response.data )
+					});
 		});
 	},
 };

@@ -13,13 +13,6 @@ const conf = require('./.config.json');
 const isDev = conf.APP_ENV === 'development';
 const app = express();
 
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Credentials", true);
-//     res.header("Access-Control-Allow-Origin", "localhost:3000/app");
-//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Accept");
-// });
-
 app.use(morgan('dev'));
 app.use(bodyParser.json()); // parse application/json content-type
 app.use(bodyParser.urlencoded({extended: true})); // application/x-www-form-urlencoded
@@ -42,7 +35,7 @@ app.use(session({
     secret: conf.APP_SECRET,
     store: new SessionStore(),
     cookie: { 
-        maxAge: 3600000, // Expire every hour for development purposes (Todo handle expired session).
+        maxAge: 3600000, // Expire every hour. Just testing how session expires handling is working out (On frontend I'm just listening for invalid csrf 403).
         httpOnly: true,
     }, 
 }));
@@ -51,9 +44,7 @@ app.use(csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.get('/api', (req, res) => res.status(200).json('welcome to api'));
-// const tasks = [{id: 1, description: 'Task 10'}, {id: 2, description: 'Task 2'}];
 
 // Routes
 require('./routes/web.js')(app);
