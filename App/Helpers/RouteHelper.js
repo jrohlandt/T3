@@ -1,5 +1,13 @@
 'use strict'
 
+/**
+ * The main purpose of this class is to wrap all route async methods in the catchErrors method, so you don't have to remember to 
+ * wrap them manually each time.
+ * 
+ * The class also provides some conveniences like:
+ * - Allowing you to send controller and method info like this 'Backend/TaskController.index', instead of having to require('../Controllers/Backend/TaskController.js').index
+ * - Also you can pass in an array that contains the middleware names e.g. ['auth', 'something'] and then it will find the appropriate file in the App/Middleware dir.
+ */
 const MiddlewareHelper = require('./MiddlewareHelper.js');
 
 
