@@ -3,10 +3,10 @@ import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import '../../css/main.scss';
 
-import Timer from './components/Timer/index.js';
-import Reports from './components/Reports';
-import Projects from './components/Projects';
-import Clients from './components/Clients';
+import Timer from './components/tasks/index.jsx';
+import Reports from './components/reports/index.jsx';
+import Projects from './components/projects/index.jsx';
+import Clients from './components/clients/index.jsx';
 
 import FaClock from 'react-icons/lib/fa/clock-o';
 import FaBarChart from 'react-icons/lib/fa/bar-chart';

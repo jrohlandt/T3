@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
-import DropDown from './DropDown.js';
-import DisplayTimer from './Timer';
+import DropDown from './dropdown.jsx';
+import DisplayTimer from './timer.jsx';
 import DateHelper from '../../core/Helpers/DateHelper';
 import TaskHelper from '../../core/Helpers/TaskHelper';
 import Trash from 'react-icons/lib/md/delete';

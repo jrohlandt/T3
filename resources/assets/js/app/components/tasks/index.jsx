@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import TaskRow from './TaskRow.js';
+import TaskRow from './task-row.jsx';
 
 import Ajax from '../../core/Helpers/AjaxHelper';
 import DateHelper from '../../core/Helpers/DateHelper';
