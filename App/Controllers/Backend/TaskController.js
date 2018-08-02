@@ -1,3 +1,4 @@
+'use strict'
 const Task = require('../../Models/').tasks;
 const DateHelper = require('../../Helpers/DateHelper.js');
 
@@ -8,7 +9,6 @@ module.exports = {
     */
     async index(req, res) {
 
-        console.log('req.xhr: ', req.xhr, req.headers);
         if (!req.xhr) {
             return res.render('backend/index', { title: 'T3', csrfToken: req.csrfToken() });
         }

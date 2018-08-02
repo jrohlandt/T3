@@ -5,15 +5,21 @@ module.exports = (app) => {
     const Route = new RouteHelper(app);
     const MiddlewareHelper = require('../App/Helpers/MiddlewareHelper.js');
 
+    // app
     app.use('/app', (req, res, next) => {
         MiddlewareHelper.runMiddleWare(req, res, next, ['auth']);
     });
+
+    // app/tasks
     Route.get('/app', 'TaskController.index');
     Route.get('/app/tasks', 'TaskController.index');
     Route.get('/app/tasks/active', 'TaskController.getActiveTask');
     Route.post('/app/tasks', 'TaskController.create');
     Route.put('/app/tasks', 'TaskController.update');
     Route.delete('/app/tasks', 'TaskController.delete');
+
+    // app/clients
+    Route.get('/app/clients', 'ClientController.index');
 
     const AuthController = require('../App/Controllers/Auth/AuthController.js');
     app.get('/app/getAuthUser', Route.catchErrors(AuthController.getAuthUser));

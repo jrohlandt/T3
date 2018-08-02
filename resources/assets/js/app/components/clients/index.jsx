@@ -2,7 +2,26 @@ import React from 'react';
 
 const Clients = () => (
     <div>
-        Clients
+        <table className='listing-table'>
+            <tbody>
+                <tr>
+                    <td>
+                        name
+                    </td>
+                    <td className='listing-td-actions'>
+                        actions
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        name
+                    </td>
+                    <td className='listing-td-actions'>
+                        actions
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 );
 
