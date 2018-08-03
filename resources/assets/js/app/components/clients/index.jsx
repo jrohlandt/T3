@@ -1,6 +1,9 @@
 import React from 'react';
 import Ajax from '../../core/Helpers/AjaxHelper';
 
+import List from '../shared/listing/list.jsx';
+import Row from '../shared/listing/row.jsx';
+
 class Clients extends React.Component {
 
     constructor(props) {
@@ -23,27 +26,17 @@ class Clients extends React.Component {
     render() {
 
         const clientRows = this.state.clients.map(c => 
-            <tr key={c.id} >
-                <td>
-                    {c.name}
-                </td>
-                <td className='listing-td-actions'>
-                    actions
-                </td>
-            </tr>
+            <Row key={c.id} name={c.name} />
         );
+
         return (
             <div>
-                <table className='listing-table'>
-                    <tbody>
-                        {clientRows}
-                    </tbody>
-                </table>
+                <List>
+                    {clientRows}
+                </List>
             </div>
         );
     }
 };
-
-
 
 export default Clients;
