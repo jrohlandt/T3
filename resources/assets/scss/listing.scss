@@ -7,3 +7,9 @@
 .listing-td-actions {
     width: 10%;
 }
+
+.listing-td-actions div {
+    float: right;
+    padding: 5px;
+    cursor: pointer;
+}

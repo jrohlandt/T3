@@ -12,10 +12,20 @@ class Clients extends React.Component {
         this.state = {
             clients: [],
         }
+
+        this.deleteClient = this.deleteClient.bind(this);
+        this.editClient = this.editClient.bind(this);
+    }
+
+    deleteClient(id) {
+        console.log('delete client ', id);
+    }
+
+    editClient(id) {
+        console.log('edit client ', id);
     }
 
     componentDidMount() {
-
         Ajax.get('/app/clients')
             .then(res => {
                 this.setState({clients: res.clients});
@@ -26,7 +36,12 @@ class Clients extends React.Component {
     render() {
 
         const clientRows = this.state.clients.map(c => 
-            <Row key={c.id} name={c.name} />
+            <Row 
+                key={c.id} 
+                id={c.id} 
+                name={c.name} 
+                deleteRow={this.deleteClient}
+            />
         );
 
         return (
