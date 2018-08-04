@@ -112,7 +112,7 @@ module.exports = {
         try {
             if (body.id < 1) {
                 return res.status(200).json({
-                    message: `Task with id: ${body.id} has already been created.`,
+                    message: `Invalid task id: ${body.id}.`,
                     task: body,
                 });
             }

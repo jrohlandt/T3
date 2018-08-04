@@ -4,6 +4,8 @@
 @import './sidebar.scss';
 @import './tasks.scss';
 @import './listing.scss';
+@import './popup.scss';
+@import './buttons.scss';
 
 html, body {
     padding: 0;
@@ -41,6 +43,25 @@ ul, li {
 main {
     grid-area: main;
     background-color: $main-background-color;
+}
+
+.main-header {
+    height: 100px;
+    width: 100%;
+}
+
+.main-header h1 {
+    float: left;
+    margin-left: 20px;
+}
+
+.main-header .create-new-btn {
+    float: right;
+    width: 150px;
+    margin-right: 20px;
+    padding: 5px;
+    border: thin solid black;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 700px) {

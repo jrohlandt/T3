@@ -20,6 +20,8 @@ module.exports = (app) => {
 
     // app/clients
     Route.get('/app/clients', 'ClientController.index');
+    Route.post('/app/clients', 'ClientController.create');
+    Route.put('/app/clients', 'ClientController.update');
 
     const AuthController = require('../App/Controllers/Auth/AuthController.js');
     app.get('/app/getAuthUser', Route.catchErrors(AuthController.getAuthUser));
