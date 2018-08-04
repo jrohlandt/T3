@@ -1,6 +1,5 @@
 .vscode/*
 .idea/*
 node_modules/*
-sessions/*
 .config.json
 .sequelize.config.json
