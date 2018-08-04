@@ -73,4 +73,29 @@ module.exports = {
             });
         }
     },
+
+    /**
+     * delete
+     */
+    async delete(req, res) {
+        try {
+            const client = await Client.find({
+                where: {
+                    id: req.query.id,
+                    userId: req.user.id,
+                }
+            });
+            await client.destroy();
+    
+            return res.status(200).json({
+                message: 'Client has been deleted.',
+            });
+        } catch (err) {
+            
+            return res.status(500).json({
+                message: 'Client could not be deleted.',
+                error: err,
+            });
+        }
+    }
 }

@@ -7,7 +7,7 @@ const Row = (props) => (
     <tr>
         <td>{props.name}</td>
         <td className='listing-td-actions'>
-            <div onClick={() => props.deleteRow(props.id)}>
+            <div onClick={() => props.showPopup('delete', props.id)}>
                 <Trash/>
             </div>
             <div onClick={() => props.editRow(props.id)}>
