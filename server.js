@@ -35,7 +35,7 @@ app.use(session({
     secret: conf.APP_SECRET,
     store: new SessionStore(),
     cookie: { 
-        maxAge: 3600000, // Expire every hour. Just testing how session expires handling is working out (On frontend I'm just listening for invalid csrf 403).
+        maxAge: 604800000, // Expire every 7 days. (On frontend I'm just listening for invalid csrf 403).
         httpOnly: true,
     }, 
 }));

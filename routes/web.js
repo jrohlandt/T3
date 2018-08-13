@@ -18,6 +18,12 @@ module.exports = (app) => {
     Route.put('/app/tasks', 'TaskController.update');
     Route.delete('/app/tasks', 'TaskController.delete');
 
+    // app/projects
+    Route.get('/app/projects', 'ProjectController.index');
+    Route.post('/app/projects', 'ProjectController.create');
+    Route.put('/app/projects', 'ProjectController.update');
+    Route.delete('/app/projects', 'ProjectController.delete');
+
     // app/clients
     Route.get('/app/clients', 'ClientController.index');
     Route.post('/app/clients', 'ClientController.create');
