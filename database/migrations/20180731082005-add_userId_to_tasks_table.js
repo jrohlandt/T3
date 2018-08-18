@@ -13,7 +13,7 @@ module.exports = {
       'tasks', 
       'userId', 
       {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         after: 'description',
       }
     );

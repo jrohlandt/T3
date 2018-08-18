@@ -8,14 +8,14 @@ module.exports = {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.INTEGER
+          type: Sequelize.INTEGER.UNSIGNED
         },
         name: {
           type: Sequelize.STRING,
           allowNull: false,
         },
         userId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,
         },
         createdAt: {

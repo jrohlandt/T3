@@ -30,21 +30,7 @@ class Timer extends React.Component {
             authUser: {},
             tasks: [],
             activeTask: Object.assign({}, emptyTask),
-            projects: [
-                { id: 0, name: 'no project' },
-                { id: 1, name: 'Webinarignition', color: '169, 212, 229' },
-                { id: 2, name: 'Provely', color: '104, 234, 148' },
-                { id: 3, name: 'Heatmaptracker', color: '233, 191, 153' },
-                { id: 4, name: 'PressPlay' },
-                { id: 5, name: 'Listeruption2', color: '230, 240, 177' },
-                { id: 6, name: 'LeadGrab' },
-                { id: 7, name: 'Emailspike', color: '181, 162, 228' },
-                { id: 8, name: 'Timerspike', color: '181, 162, 228' },
-                { id: 9, name: 'SeoSnapshot', },
-                { id: 10, name: 'ProjectHub', },
-                { id: 11, name: 'PinPoint', },
-                { id: 12, name: 'TicketHub', },
-            ],
+            projects: [],
             types: [
                 { id: 0, name: 'none' },
                 { id: 1, name: 'ticket' },
@@ -151,12 +137,12 @@ class Timer extends React.Component {
         this.getTasks();
         this.getActiveTask();
         Ajax.get('/app/getAuthUser')
-            .then(res => {
-                this.setState({authUser: res.user});
-            })
-            .catch(err => {
-                window.location.href = '/login';
-            });
+            .then(res => this.setState({authUser: res.user}))
+            .catch(err => window.location.href = '/login');
+
+        Ajax.get('/app/projects')
+            .then(res => this.setState({projects: res.projects}))
+            .catch(err => console.log(err));
     }
 
     render() {
